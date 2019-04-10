@@ -1,0 +1,10 @@
+{
+  "name": "sdi-actividad2-606-608",
+  "version": "1.0.0",
+  "repository": "https://github.com/Ruizber/sdi-actividad2-606-608",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.16.4",
+    "swig-templates": "^2.0.3"
+  }
+}
