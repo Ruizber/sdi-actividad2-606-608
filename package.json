@@ -4,6 +4,7 @@
   "repository": "https://github.com/Ruizber/sdi-actividad2-606-608",
   "license": "UNLICENSED",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "swig-templates": "^2.0.3"
   }
