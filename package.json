@@ -5,7 +5,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "swig-templates": "^2.0.3"
   }
 }
