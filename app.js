@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var crypto = require('crypto');
+
 
 var expressSession = require('express-session');
 app.use(expressSession({
@@ -15,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 app.set('port', 8081);
+app.set('clave','abcdefg');
+app.set('crypto',crypto);
 
 
 require("./routes/rusuarios.js")(app, swig);

@@ -1,66 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head th:replace="fragments/head" />
-<body>
-	<!-- Barra de Navegación superior -->
-	<nav th:replace="fragments/nav" />
-	<div class="container">
-		<h2 th:text="#{registrationUser.message}"></h2>
-		<form class="form-horizontal" method="post" action="/signup"
-			th:object="${user}">
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="email" th:text="#{email.message}"></label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" name="email"
-						placeholder="ruizber@gmail.com" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('email')}"
-						th:errors="*{email}">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="name" th:text="#{nameRegistration.message}"></label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" name="name"
-						placeholder="Ejemplo: Juan" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('name')}"
-						th:errors="*{name}" />
+{% extends "base.html" %} 
 
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="surname" th:text="#{surnamesRegistration.message}"></label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" name="surname"
-						placeholder="Ejemplo: Peréz Almonte" required="true" /> <span
-						class="text-danger" th:if="${#fields.hasErrors('surname')}"
-						th:errors="*{surname}" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="password" th:text="#{contrasea.message}"></label>
-				<div class="col-sm-10">
-					<input type="password" class="form-control" name="password"
-						placeholder="Entre el Password" /> <span class="text-danger"
-						th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="repassword" th:text="#{repitContrase.message}">
-					</label>
-				<div class="col-sm-10">
-					<input type="password" class="form-control" name="repassword"
-						placeholder="Repita el Password" /> <span class="text-danger"
-						th:if="${#fields.hasErrors('repassword')}"
-						th:errors="*{repassword}" />
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary" th:text="#{enviarregistration.message}" id="buttonRegistrarse"></button>
-				</div>
-			</div>
-		</form>
-	</div>
-	<footer th:replace="fragments/footer" />
-</body>
-</html>
+{% block titulo %} Registrar usuario {% endblock %} 
+
+{% block contenido_principal %}
+  <h2>Registrar usuario</h2>
+  <form class="form-horizontal" method="post" action="/usuario" >
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Email:</label>
+      <div class="col-sm-10">
+        <input type="email" class="form-control" name="email"
+            placeholder="email@email.com" required="true" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="nombre">Nombre:</label>
+      <div class="col-sm-10">
+        <input type="nombre"  class="form-control" name="nombre"
+               placeholder="Fernando" required="true" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="appelidos">Apellidos:</label>
+      <div class="col-sm-10">
+        <input type="apellidos"  class="form-control" name="password"
+               placeholder="Ruiz Berciano" required="true" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="password">Password:</label>
+      <div class="col-sm-10">          
+        <input type="password"  class="form-control" name="password" 
+        	placeholder="contraseña" required="true" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="repassword">Repita password:</label>
+      <div class="col-sm-10">
+        <input type="password"  class="form-control" name="repassword"
+               placeholder="contraseña" required="true" />
+      </div>
+    </div>
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Registrar</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
