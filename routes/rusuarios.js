@@ -1,13 +1,4 @@
 module.exports = function(app, swig, gestorBD) {
-    app.get("/usuarios", function(req, res) {
-        res.send("ver usuarios");
-    });
-
-    app.get("/asd", function (req, res) {
-        let respuesta = swig.renderFile('views/templates/base.html', {});
-        res.send(respuesta);
-    });
-
     app.get("/registrarse", function(req, res) {
         var respuesta = swig.renderFile('views/registrarse.html', {});
         res.send(respuesta);
@@ -30,8 +21,8 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.get("/identificarse", function(req, res) {
-        var respuesta = swig.renderFile('views/identificarse.html', {});
-        res.send(respuesta);
+        let answer = swig.renderFile('views/identificarse.html', {});
+        res.send(answer);
     });
 
     app.post("/identificarse", function(req, res) {

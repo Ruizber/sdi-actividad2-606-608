@@ -82,7 +82,7 @@ app.use( function (err, req, res, next ) {
     }
 });
 app.get('/', function (req, res) {
-    res.redirect('/tienda');
+    res.redirect('/identificarse');
 })
 
 app.listen(app.get('port'), function() {
