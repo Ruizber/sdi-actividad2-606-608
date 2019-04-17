@@ -31,7 +31,7 @@ routerUsuarioSession.use(function(req, res, next) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : "+req.session.destino)
+        console.log("va a : "+ req.session.destino)
         res.redirect("/identificarse");
     }
 });

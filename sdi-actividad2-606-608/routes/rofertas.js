@@ -56,11 +56,11 @@ module.exports = function (app, swig, gestorBD) {
                         paginas.push(i);
                     }
                 }
-                let respuesta = swig.renderFile('views/index.html',
+                let respuesta = swig.renderFile('views/tienda.html',
                     {
-                        // ofertas: ofertas,
-                        // paginas: paginas,
-                        // actual: pg
+                        ofertas: ofertas,
+                        paginas: paginas,
+                        actual: pg
                     });
                 res.send(respuesta);
             }
@@ -72,7 +72,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/tienda");
             return;
         }
-        let respuesta = swig.renderFile('views/bagregar.html', {});
+        let respuesta = swig.renderFile('views/agregar.html', {});
         res.send(respuesta);
     });
 
@@ -97,7 +97,7 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send(respuesta);
             } else {
-                res.redirect("/publicaciones");
+                res.redirect("/ofertas");
             }
         });
     });
@@ -127,7 +127,7 @@ module.exports = function (app, swig, gestorBD) {
                 }
                 let criterio = {"_id": {$in: ofertasCompradasIds}}
                 gestorBD.obtenerOfertas(criterio, function (ofertas) {
-                    let respuesta = swig.renderFile('views/bcompras.html',
+                    let respuesta = swig.renderFile('views/compras.html',
                         {
                             ofertas: ofertas
                         });
