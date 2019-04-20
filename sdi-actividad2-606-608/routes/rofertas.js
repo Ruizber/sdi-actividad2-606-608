@@ -14,6 +14,21 @@ module.exports = function (app, swig, gestorBD) {
         res.send(respuesta);
     });
 
+    app.get('/oferta/:id', function (req, res) {
+        var criterio = { "_id" :  gestorBD.mongo.ObjectID(req.params.id) };
+        gestorBD.obtenerOfertas(criterio,function(ofertas){
+            if ( ofertas == null ){
+                res.send(respuesta);
+            } else {
+                var respuesta = swig.renderFile('views/boferta.html',
+                    {
+                        oferta : ofertas[0]
+                    });
+                res.send(respuesta);
+            }
+        });
+    });
+
     app.post("/oferta", function (req, res) {
         if (req.session.usuario == null) {
             res.redirect("/tienda");
@@ -133,6 +148,21 @@ module.exports = function (app, swig, gestorBD) {
                         });
                     res.send(respuesta);
                 });
+            }
+        });
+    });
+
+    app.get("/publicaciones", function(req, res) {
+        var criterio = { autor : req.session.usuario };
+        gestorBD.obtenerOfertas(criterio, function(ofertas) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+            } else {
+                var respuesta = swig.renderFile('views/bpublicaciones.html',
+                    {
+                        ofertas : ofertas
+                    });
+                res.send(respuesta);
             }
         });
     });
