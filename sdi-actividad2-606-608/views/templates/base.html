@@ -32,24 +32,25 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
                 <li><a href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
+                <li><a href="/desconectarse"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 
-
 <div class="container">
     <script>
         var mensaje = getUrlParameter('mensaje');
         var tipoMensaje = getUrlParameter('tipoMensaje');
-        if ( mensaje != ""){
-            if (tipoMensaje == "" ){
+        if (mensaje != "") {
+            if (tipoMensaje == "") {
                 tipoMensaje = 'alert-info';
             }
-            $( ".container" )
-                .append("<div class='alert "+tipoMensaje+"'>"+mensaje+" </div>");
+            $(".container")
+                .append("<div class='alert " + tipoMensaje + "'>" + mensaje + " </div>");
         }
+
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
