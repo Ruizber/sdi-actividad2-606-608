@@ -39,6 +39,7 @@ app.use("/ofertas/agregar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
 app.use("/oferta/comprar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
+app.use("/publicaciones",routerUsuarioSession);
 
 //routerUsuarioAutor
 let routerUsuarioAutor = express.Router();

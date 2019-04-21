@@ -1,18 +1,12 @@
 module.exports = function (app, swig, gestorBD) {
 
-    app.get("/ofertas", function (req, res) {
-        var criterio = {autor: req.session.usuario};
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            if (ofertas == null) {
-                res.send("Error al listar ");
-            } else {
-                var respuesta = swig.renderFile('views/bofertas.html',
-                    {
-                        ofertas: ofertas
-                    });
-                res.send(respuesta);
-            }
-        });
+    app.get('/ofertas/agregar', function (req, res) {
+        if (req.session.usuario == null) {
+            res.redirect("/tienda");
+            return;
+        }
+        var respuesta = swig.renderFile('views/bagregar.html', {});
+        res.send(respuesta);
     });
 
     app.get('/ofertas/:id', function (req, res) {
@@ -49,7 +43,7 @@ module.exports = function (app, swig, gestorBD) {
             if (id == null) {
                 res.send("Error al insertar oferta");
             } else {
-                res.send("Agregada la oferta ID: " + id);
+                res.redirect("/publicaciones");
             }
         });
     });
@@ -88,27 +82,34 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-    app.get('/ofertas/agregar', function (req, res) {
-        if (req.session.usuario == null) {
-            res.redirect("/tienda");
-            return;
-        }
-        var respuesta = swig.renderFile('views/bagregar.html', {});
-        res.send(respuesta);
-    })
+    app.get('/oferta/modificar/:id', function (req, res) {
+        var criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
+        gestorBD.obtenerOfertas(criterio,function(ofertas){
+            if ( ofertas == null ){
+                res.send(respuesta);
+            } else {
+                var respuesta = swig.renderFile('views/bofertaModificar.html',
+                    {
+                        oferta : ofertas[0]
+                    });
+                res.send(respuesta);
+            }
+        });
+    });
+
 
     app.post('/oferta/modificar/:id', function (req, res) {
-        let id = req.params.id;
-        let criterio = {"_id": gestorBD.mongo.ObjectID(id)};
-        let oferta = {
-            nombre: req.body.nombre,
-            precio: req.body.precio
+        var id = req.params.id;
+        var criterio = { "_id" : gestorBD.mongo.ObjectID(id) };
+        var oferta = {
+            nombre : req.body.nombre,
+            precio : req.body.precio
         }
-        gestorBD.modificarOferta(criterio, oferta, function (result) {
+        gestorBD.modificarOferta(criterio, oferta, function(result) {
             if (result == null) {
                 res.send("Error al modificar ");
             } else {
-                res.send("Modificado " + result);
+                res.redirect("/publicaciones");
             }
         });
     });
@@ -118,7 +119,7 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send(respuesta);
             } else {
-                res.redirect("/ofertas");
+                res.redirect("/publicaciones");
             }
         });
     });
