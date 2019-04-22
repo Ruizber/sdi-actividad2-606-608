@@ -36,6 +36,8 @@ module.exports = function (app, swig, gestorBD) {
         }
         let oferta = {
             nombre: req.body.nombre,
+            detalle: req.body.detalle,
+            fecha: req.body.fecha,
             precio: req.body.precio,
             autor: req.session.usuario
         }
@@ -78,38 +80,6 @@ module.exports = function (app, swig, gestorBD) {
                         actual: pg
                     });
                 res.send(respuesta);
-            }
-        });
-    });
-
-    app.get('/oferta/modificar/:id', function (req, res) {
-        var criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
-        gestorBD.obtenerOfertas(criterio,function(ofertas){
-            if ( ofertas == null ){
-                res.send(respuesta);
-            } else {
-                var respuesta = swig.renderFile('views/bofertaModificar.html',
-                    {
-                        oferta : ofertas[0]
-                    });
-                res.send(respuesta);
-            }
-        });
-    });
-
-
-    app.post('/oferta/modificar/:id', function (req, res) {
-        var id = req.params.id;
-        var criterio = { "_id" : gestorBD.mongo.ObjectID(id) };
-        var oferta = {
-            nombre : req.body.nombre,
-            precio : req.body.precio
-        }
-        gestorBD.modificarOferta(criterio, oferta, function(result) {
-            if (result == null) {
-                res.send("Error al modificar ");
-            } else {
-                res.redirect("/publicaciones");
             }
         });
     });
