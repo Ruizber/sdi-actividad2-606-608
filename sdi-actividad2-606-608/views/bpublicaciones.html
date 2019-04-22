@@ -1,39 +1,42 @@
-{% extends "base.html" %} {% block titulo %} Mis Ofertas {% endblock %}
+{% extends "templates/base.html" %} {% block titulo %} Mis Publicaciones {% endblock %}
 
 {% block contenido_principal %}
 <h2>Mis ofertas</h2>
 
 <!-- Agregar Oferta -->
 <div class="row text-right">
-	<a href="/ofertas/agregar" class="btn btn-info" role="button">Agregar oferta</a>
+    <a href="/ofertas/agregar" class="btn btn-info" role="button">Agregar oferta</a>
 </div>
 
 <div class="table-responsive">
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Nombre</th>
-				<th>Precio</th>
-				<th class="col-md-1"></th>
-			</tr>
-		</thead>
-		<tbody>
-		{% for oferta in ofertas %}
-			<tr>
-				<td>{{ oferta.nombre }}</td>
-				<td>{{ oferta.precio }}</td>
-				<td><a href="/oferta/modificar/{{ oferta._id.toString() }}">Modificar</a> <br>
-					<a href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
-			    </td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	</table>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Detalle</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for oferta in ofertas %}
+        <tr>
+            <td>{{ oferta.nombre }}</td>
+            <td>{{ oferta.detalle }}</td>
+            <td>{{ oferta.fecha }}</td>
+            <td>{{ oferta.precio }}</td>
+            <td><a href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <!-- Agregar Oferta -->
 <div class="row text-right">
-	<a href="/ofertas/agregar" class="btn btn-info" role="button">Agregar oferta</a>
+    <a href="/ofertas/agregar" class="btn btn-info" role="button">Agregar oferta</a>
 </div>
 
 {% endblock %}
