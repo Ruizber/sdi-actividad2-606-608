@@ -10,20 +10,30 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/usuario', function (req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-            .update(req.body.password).digest('hex');
-        var usuario = {
-            email: req.body.email,
-            nombre: req.body.nombre,
-            password: seguro
+        if(req.body.nombre == null || req.body.nombre == '' || req.body.apellidos == null || req.body.apellidos == ''
+        || req.body.password == null || req.body.password == '' || req.body.repassword == null || req.body.repassword == ''
+        || req.body.email == null || req.body.email == '') {
+            res.redirect("/registrarse?mensaje=Es necesario completar todos los campos&tipoMensaje=alert-danger")
         }
-        gestorBD.insertarUsuario(usuario, function (id) {
-            if (id == null) {
-                res.redirect("/registrarse?mensaje=Error al registrar usuario")
-            } else {
-                res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+        else if(req.body.password != req.body.repassword) {
+            res.redirect("/registrarse?mensaje=Las contraseñas deben ser iguales&tipoMensaje=alert-danger")
+        }
+        else {
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            var usuario = {
+                email: req.body.email,
+                nombre: req.body.nombre,
+                password: seguro
             }
-        });
+            gestorBD.insertarUsuario(usuario, function (id) {
+                if (id == null) {
+                    res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
+                } else {
+                    res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+                }
+            });
+        }
     });
 
     app.get("/identificarse", function (req, res) {
