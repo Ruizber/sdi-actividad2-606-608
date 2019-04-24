@@ -40,6 +40,8 @@ app.use("/ofertas", routerUsuarioSession);
 app.use("/oferta/comprar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
 app.use("/publicaciones",routerUsuarioSession);
+app.use("/tienda", routerUsuarioSession);
+app.use("/compras", routerUsuarioSession);
 
 //routerUsuarioAutor
 let routerUsuarioAutor = express.Router();
