@@ -1,7 +1,7 @@
 module.exports = function (app, swig, gestorBD) {
 
     app.get('/ofertas/agregar', function (req, res) {
-        if (req.session.usuario == null) {
+        if (req.session.usuario === null) {
             res.redirect("/tienda");
             return;
         }
@@ -15,14 +15,14 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get('/oferta/:id', function (req, res) {
-        var criterio = { "_id" :  gestorBD.mongo.ObjectID(req.params.id) };
-        gestorBD.obtenerOfertas(criterio,function(ofertas){
-            if ( ofertas == null ){
+        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas === null) {
                 res.send(respuesta);
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
                     {
-                        oferta : ofertas[0]
+                        oferta: ofertas[0]
                     });
                 res.send(respuesta);
             }
@@ -30,7 +30,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post("/oferta", function (req, res) {
-        if (req.session.usuario == null) {
+        if (req.session.usuario === null) {
             res.redirect("/tienda");
             return;
         }
@@ -42,7 +42,7 @@ module.exports = function (app, swig, gestorBD) {
             autor: req.session.usuario
         }
         gestorBD.insertarOferta(oferta, function (id) {
-            if (id == null) {
+            if (id === null) {
                 res.send("Error al insertar oferta");
             } else {
                 res.redirect("/publicaciones");
@@ -52,15 +52,15 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get("/tienda", function (req, res) {
         let criterio = {};
-        if (req.query.busqueda != null) {
+        if (req.query.busqueda !== null) {
             criterio = {"nombre": {$regex: ".*" + req.query.busqueda + ".*", $options: "i"}};
         }
         let pg = parseInt(req.query.pg); // Es String !!!
-        if (req.query.pg == null) { // Puede no venir el param
+        if (req.query.pg === null) { // Puede no venir el param
             pg = 1;
         }
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
-            if (ofertas == null) {
+            if (ofertas === null) {
                 res.send("Error al listar ");
             } else {
                 let ultimaPg = total / 4;
@@ -86,7 +86,7 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/oferta/eliminar/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.eliminarOferta(criterio, function (ofertas) {
-            if (ofertas == null) {
+            if (ofertas === null) {
                 res.send(respuesta);
             } else {
                 res.redirect("/publicaciones");
@@ -100,7 +100,7 @@ module.exports = function (app, swig, gestorBD) {
             ofertaId: ofertaId
         }
         gestorBD.insertarCompra(compra, function (idCompra) {
-            if (idCompra == null) {
+            if (idCompra === null) {
                 res.send(respuesta);
             } else {
                 res.redirect("/compras");
@@ -110,7 +110,7 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/compras', function (req, res) {
         let criterio = {"usuario": req.session.usuario};
         gestorBD.obtenerCompras(criterio, function (compras) {
-            if (compras == null) {
+            if (compras === null) {
                 res.send("Error al listar ");
             } else {
                 let ofertasCompradasIds = [];
@@ -129,15 +129,15 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-    app.get("/publicaciones", function(req, res) {
-        var criterio = { autor : req.session.usuario };
-        gestorBD.obtenerOfertas(criterio, function(ofertas) {
-            if (ofertas == null) {
+    app.get("/publicaciones", function (req, res) {
+        var criterio = {autor: req.session.usuario};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas === null) {
                 res.send("Error al listar ");
             } else {
                 var respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
-                        ofertas : ofertas
+                        ofertas: ofertas
                     });
                 res.send(respuesta);
             }

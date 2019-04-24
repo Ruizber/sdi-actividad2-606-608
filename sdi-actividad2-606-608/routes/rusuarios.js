@@ -10,24 +10,25 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/usuario', function (req, res) {
-        if(req.body.nombre == null || req.body.nombre == '' || req.body.apellidos == null || req.body.apellidos == ''
-        || req.body.password == null || req.body.password == '' || req.body.repassword == null || req.body.repassword == ''
-        || req.body.email == null || req.body.email == '') {
+        if (req.body.nombre === null || req.body.nombre === '' || req.body.apellidos == null || req.body.apellidos === ''
+            || req.body.password === null || req.body.password === '' || req.body.repassword === null || req.body.repassword === ''
+            || req.body.email === null || req.body.email === '') {
             res.redirect("/registrarse?mensaje=Es necesario completar todos los campos&tipoMensaje=alert-danger")
-        }
-        else if(req.body.password != req.body.repassword) {
+        } else if (req.body.password !== req.body.repassword) {
             res.redirect("/registrarse?mensaje=Las contraseñas deben ser iguales&tipoMensaje=alert-danger")
-        }
-        else {
+        } else {
             var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                 .update(req.body.password).digest('hex');
             var usuario = {
                 email: req.body.email,
                 nombre: req.body.nombre,
+                apellido: req.body.apellidos,
+                dinero: 100,
+                rol: 'usuario',
                 password: seguro
             }
             gestorBD.insertarUsuario(usuario, function (id) {
-                if (id == null) {
+                if (id === null) {
                     res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
                 } else {
                     res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
@@ -42,10 +43,9 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post("/identificarse", function (req, res) {
-        if(req.body.email == '' || req.body.email == null) {
+        if (req.body.email === '' || req.body.email === null) {
             res.redirect("/identificarse?mensaje=El email no puede estar vacío")
-        }
-        else if ( req.body.password == null || req.body.password == '') {
+        } else if (req.body.password === null || req.body.password === '') {
             res.redirect("/identificarse?mensaje=La contraseña no puede estar vacía")
         } else {
             var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
@@ -55,7 +55,7 @@ module.exports = function (app, swig, gestorBD) {
                 password: seguro
             }
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-                if (usuarios == null || usuarios.length == 0) {
+                if (usuarios === null || usuarios.length === 0) {
                     req.session.usuario = null;
                     res.redirect("/identificarse" +
                         "?mensaje=Email o password incorrecto" +
