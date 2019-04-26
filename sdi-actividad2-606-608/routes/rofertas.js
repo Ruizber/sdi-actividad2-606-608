@@ -22,7 +22,8 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
                     {
-                        oferta: ofertas[0]
+                        oferta: ofertas[0],
+                        usuario: req.session.usuario,
                     });
                 res.send(respuesta);
             }
@@ -77,7 +78,8 @@ module.exports = function (app, swig, gestorBD) {
                     {
                         ofertas: ofertas,
                         paginas: paginas,
-                        actual: pg
+                        actual: pg,
+                        usuario: req.session.usuario
                     });
                 res.send(respuesta);
             }
@@ -121,6 +123,7 @@ module.exports = function (app, swig, gestorBD) {
                 gestorBD.obtenerOfertas(criterio, function (ofertas) {
                     let respuesta = swig.renderFile('views/bcompras.html',
                         {
+                            usuario: req.session.usuario,
                             ofertas: ofertas
                         });
                     res.send(respuesta);
@@ -135,8 +138,10 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas === null) {
                 res.send("Error al listar ");
             } else {
+                console.log(req.session.usuario);
                 var respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
+                        usuario: req.session.usuario,
                         ofertas: ofertas
                     });
                 res.send(respuesta);
