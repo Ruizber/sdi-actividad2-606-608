@@ -39,31 +39,29 @@ app.use("/ofertas/agregar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
 app.use("/oferta/comprar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
-app.use("/publicaciones",routerUsuarioSession);
+app.use("/publicaciones", routerUsuarioSession);
 app.use("/tienda", routerUsuarioSession);
 app.use("/compras", routerUsuarioSession);
 
 //routerUsuarioAutor
-let routerUsuarioAutor = express.Router();
-routerUsuarioAutor.use(function (req, res, next) {
-    console.log("routerUsuarioAutor");
+let routerUsuario = express.Router();
+routerUsuario.use(function (req, res, next) {
     let path = require('path');
     let id = path.basename(req.originalUrl);
 // Cuidado porque req.params no funciona
 // en el router si los params van en la URL.
-    gestorBD.obtenerOfertas(
-        {_id: mongo.ObjectID(id)}, function (ofertas) {
-            console.log(ofertas[0]);
-            if (ofertas[0].autor == req.session.usuario) {
+    gestorBD.obtenerUsuarios(
+        {_id: mongo.ObjectID(id)}, function (usuarios) {
+            if (usuarios[0].rol === 'usuario') {
                 next();
             } else {
-                res.redirect("/tienda");
+                res.redirect("/identificarse");
             }
         })
 });
 //Aplicar routerUsuarioAutor
-app.use("/oferta/modificar", routerUsuarioAutor);
-app.use("/oferta/eliminar", routerUsuarioAutor);
+app.use("/oferta/modificar", routerUsuario);
+app.use("/oferta/eliminar", routerUsuario);
 
 app.use(express.static('public'));
 app.set('port', 8081);
@@ -84,7 +82,7 @@ app.use(function (err, req, res, next) {
     }
 });
 app.get('/', function (req, res) {
-    res.redirect('/identificarse');
+    res.redirect('/index');
 })
 
 app.listen(app.get('port'), function () {
