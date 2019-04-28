@@ -22,6 +22,7 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
+
     app.post("/oferta", function (req, res) {
         if (req.session.usuario === null) {
             res.redirect("/tienda");
@@ -44,9 +45,16 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/tienda", function (req, res) {
-        let criterio = {};
-        if (req.query.busqueda !== null) {
-            criterio = {"nombre": {$regex: ".*" + req.query.busqueda + ".*", $options: "i"}};
+        let criterio = {
+                autor: {
+                     $ne: req.session.usuario.email
+            }};
+        if (req.query.busqueda !== undefined) {
+            criterio = {
+                "nombre": {
+                    $regex: ".*" + req.query.busqueda + ".*", $options: "i"
+                }
+            };
         }
         let pg = parseInt(req.query.pg); // Es String !!!
         if (req.query.pg === null) { // Puede no venir el param
@@ -56,8 +64,8 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas === null) {
                 res.send("Error al listar ");
             } else {
-                let ultimaPg = total / 4;
-                if (total % 4 > 0) { // Sobran decimales
+                let ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
                 let paginas = []; // paginas mostrar
@@ -66,12 +74,12 @@ module.exports = function (app, swig, gestorBD) {
                         paginas.push(i);
                     }
                 }
-                let respuesta = swig.renderFile('views/tienda.html',
+                let respuesta = swig.renderFile('views/btienda.html',
                     {
+                        usuario: req.session.usuario,
                         ofertas: ofertas,
                         paginas: paginas,
-                        actual: pg,
-                        usuario: req.session.usuario
+                        actual: pg
                     });
                 res.send(respuesta);
             }
@@ -116,7 +124,7 @@ module.exports = function (app, swig, gestorBD) {
                     let respuesta = swig.renderFile('views/bcompras.html',
                         {
                             usuario: req.session.usuario,
-                            ofertas: ofertas
+                            ofertas: compras
                         });
                     res.send(respuesta);
                 });
@@ -125,7 +133,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/publicaciones", function (req, res) {
-        var criterio = {autor: req.session.usuario};
+        var criterio = {autor: req.session.usuario.email};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas === null) {
                 res.send("Error al listar ");

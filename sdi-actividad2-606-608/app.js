@@ -2,7 +2,7 @@ let express = require('express');
 let app = express();
 let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
-app.set('jwt',jwt);
+app.set('jwt', jwt);
 
 
 let expressSession = require('express-session');
@@ -11,7 +11,7 @@ app.use(expressSession({
     resave: true,
     saveUninitialized: true
 }));
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "POST, GET, DELETE, UPDATE, PUT");
@@ -32,16 +32,16 @@ gestorBD.init(app, mongo);
 
 // routerUsuarioToken
 var routerUsuarioToken = express.Router();
-routerUsuarioToken.use(function(req, res, next) {
+routerUsuarioToken.use(function (req, res, next) {
     // obtener el token, vía headers (opcionalmente GET y/o POST).
     var token = req.headers['token'] || req.body.token || req.query.token;
     if (token != null) {
         // verificar el token
-        jwt.verify(token, 'secreto', function(err, infoToken) {
-            if (err || (Date.now()/1000 - infoToken.tiempo) > 24000 ){
+        jwt.verify(token, 'secreto', function (err, infoToken) {
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
                 res.status(403); // Forbidden
                 res.json({
-                    acceso : false,
+                    acceso: false,
                     error: 'Token invalido o caducado'
                 });
                 // También podríamos comprobar que intoToken.usuario existe
@@ -55,7 +55,7 @@ routerUsuarioToken.use(function(req, res, next) {
     } else {
         res.status(403); // Forbidden
         res.json({
-            acceso : false,
+            acceso: false,
             mensaje: 'No hay Token'
         });
     }
@@ -67,12 +67,10 @@ app.use('/api/oferta', routerUsuarioToken);
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function (req, res, next) {
-    console.log("routerUsuarioSession");
     if (req.session.usuario) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : " + req.session.destino)
         res.redirect("/identificarse");
     }
 });
