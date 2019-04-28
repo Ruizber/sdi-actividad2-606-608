@@ -58,7 +58,7 @@ module.exports = function (app, swig, gestorBD) {
             let criterio = {
                 email: req.body.email,
                 password: seguro
-            }
+            };
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
                 if (usuarios === undefined || usuarios.length === 0) {
                     req.session.usuario = undefined;

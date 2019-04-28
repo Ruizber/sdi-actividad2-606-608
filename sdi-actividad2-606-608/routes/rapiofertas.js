@@ -49,7 +49,6 @@ module.exports = function (app, gestorBD) {
     app.post("/api/oferta", function (req, res) {
         var oferta = {
             nombre: req.body.nombre,
-            detalle: req.body.detalle,
             fecha: req.body.fecha,
             precio: req.body.precio,
         }
@@ -76,8 +75,6 @@ module.exports = function (app, gestorBD) {
         var oferta = {}; // Solo los atributos a modificar
         if (req.body.nombre != null)
             oferta.nombre = req.body.nombre;
-        if (req.body.detalle != null)
-            oferta.detalle = req.body.detalle;
         if (req.body.fecha != null)
             oferta.fecha = req.body.fecha;
         if (req.body.precio != null)
@@ -99,22 +96,24 @@ module.exports = function (app, gestorBD) {
     });
 
     app.post("/api/autenticar/", function (req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+        let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
-        var criterio = {
+        let criterio = {
             email: req.body.email,
             password: seguro
-        }
-
+        };
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
+            if (usuarios == null || usuarios.length === 0) {
                 res.status(401); // Unauthorized
                 res.json({
                     autenticado: false
                 })
             } else {
-                var token = app.get('jwt').sign(
-                    {usuario: criterio.email, tiempo: Date.now() / 1000},
+                let token = app.get('jwt').sign(
+                    {
+                        usuario: criterio.email,
+                        tiempo: Date.now() / 1000
+                    },
                     "secreto");
                 res.status(200);
                 res.json({
