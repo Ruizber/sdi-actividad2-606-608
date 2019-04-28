@@ -1,5 +1,4 @@
 module.exports = function (app, swig, gestorBD) {
-
     app.get('/ofertas/agregar', function (req, res) {
         if (req.session.usuario === null) {
             res.redirect("/tienda");
@@ -8,12 +7,6 @@ module.exports = function (app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/bagregar.html', {});
         res.send(respuesta);
     });
-
-    app.get('/ofertas/:id', function (req, res) {
-        let respuesta = 'id: ' + req.params.id;
-        res.send(respuesta);
-    });
-
     app.get('/oferta/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
@@ -29,7 +22,6 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-
     app.post("/oferta", function (req, res) {
         if (req.session.usuario === null) {
             res.redirect("/tienda");
@@ -40,8 +32,8 @@ module.exports = function (app, swig, gestorBD) {
             detalle: req.body.detalle,
             fecha: req.body.fecha,
             precio: req.body.precio,
-            autor: req.session.usuario
-        }
+            autor: req.session.usuario.email
+        };
         gestorBD.insertarOferta(oferta, function (id) {
             if (id === null) {
                 res.send("Error al insertar oferta");

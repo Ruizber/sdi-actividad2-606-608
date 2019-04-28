@@ -1,22 +1,10 @@
 module.exports = function (app, gestorBD) {
-
-    app.get("/api/oferta", function (req, res) {
-        gestorBD.obtenerOfertas({}, function (ofertas) {
-            if (ofertas == null) {
-                res.status(500);
-                res.json({
-                    error: "se ha producido un error"
-                })
-            } else {
-                res.status(200);
-                res.send(JSON.stringify(ofertas));
+    app.get("/api/oferta/", function (req, res) {
+        let criterio = {
+            autor: {
+                $ne: res.usuario
             }
-        });
-    });
-
-    app.get("/api/oferta/:id", function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
-
+        };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
@@ -25,7 +13,7 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 res.status(200);
-                res.send(JSON.stringify(ofertas[0]));
+                res.send(JSON.stringify(ofertas));
             }
         });
     });
