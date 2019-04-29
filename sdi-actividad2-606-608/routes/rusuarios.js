@@ -77,4 +77,33 @@ module.exports = function (app, swig, gestorBD) {
         let respuesta = swig.renderFile('views/bregistro.html', {});
         res.send(respuesta);
     });
+
+    app.get('/listarUsuarios', function (req, res) {
+        let criterioMongo = {
+            $and: [
+                {
+                    email: {
+                        $ne: req.session.usuario.email
+                    }
+                },
+                {
+                    valid: {
+                        $ne: false
+                    }
+                }
+            ]
+        };
+
+        gestorBD.obtenerUsuarios(criterioMongo, function (usuarios) {
+            if (usuarios !== null) {
+                var respuesta = swig.renderFile('views/listarUsuarios.html', {
+                    usuario: req.session.usuario,
+                    usuarios: usuarios
+                });
+                res.send(respuesta);
+            } else {
+                res.redirect("/identificarse?mensaje=El email no es valido");
+            }
+        })
+    });
 };
