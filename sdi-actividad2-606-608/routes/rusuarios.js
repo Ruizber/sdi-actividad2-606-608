@@ -102,8 +102,27 @@ module.exports = function (app, swig, gestorBD) {
                 });
                 res.send(respuesta);
             } else {
-                res.redirect("/identificarse?mensaje=El email no es valido");
+                res.redirect("/identificarse");
             }
         })
+    });
+
+    app.post('/delete', function (req, res) {
+        let idsUsers = req.body.idsUsers;
+        if (!Array.isArray(idsUsers)) {
+            let aux = idsUsers;
+            idsUsers = [];
+            idsUsers.push(aux);
+        }
+        let criterio = {
+            email: req.body.email
+        };
+        gestorBD.eliminarUsuarios(criterio, function (usuarios) {
+            if (usuarios === undefined || usuarios.length === 0) {
+                res.redirect("/listarUsuarios");
+            } else {
+                res.redirect("/listarUsuarios");
+            }
+        });
     });
 };

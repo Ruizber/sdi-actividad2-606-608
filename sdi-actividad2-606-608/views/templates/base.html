@@ -25,16 +25,16 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                {% if usuario != null || usuario != undefined %}
+                {% if usuario != null || usuario != undefined || usuario.rol == 'usuario' %}
                 <li id="mTienda"><a href="/tienda">Tienda</a></li>
                 <li id="mPublicaciones"><a href="/publicaciones">Publicaciones</a></li>
                 <li id="mCompras"><a href="/compras">Compras</a></li>
-                {{usuario.dinero}}€</a></li>
                 {% if usuario.rol == 'admin' %}
                 <li id="mUsuarios"><a href="/listarUsuarios">Listar usuarios</a></li>
                 {% endif %}
                 <li id="dinero" class="active"><a style="color: white" type="text" href=""> Dinero
-                    {% endif %}
+                    {{usuario.dinero}}€</a></li>
+                {% endif %}
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
