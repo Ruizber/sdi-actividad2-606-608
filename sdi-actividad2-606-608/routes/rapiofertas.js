@@ -113,4 +113,155 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.post("/api/mensaje/oferta/:id", function (req, res) {
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "Se ha producido un error"
+                })
+            } else {
+                let oferta = ofertas[0];
+                let mensaje = {
+                    emisor: res.usuario,
+                    receptor: req.body.receptor,
+                    oferta: oferta,
+                    fecha: new Date(),
+                    leido: false,
+                    mensaje: req.body.mensaje
+                };
+                gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        console.log(mensajes)
+                        res.send(JSON.stringify(mensajes));
+                    }
+                })
+            }
+        })
+    });
+
+    app.get("/api/mensaje/leido/:id", function (req, res) {
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        gestorBD.pasarMensajeLeido(criterio, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+                res.send(JSON.stringify(mensajes));
+            }
+        })
+    });
+
+    app.get("/api/conversacion/oferta/:id", function (req, res) {
+        let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "No se encontro la oferta"
+                })
+            } else {
+                let oferta = ofertas[0];
+                let criterio = {$or: [
+                        {$and: [
+                                {
+                                    emisor: res.usuario
+                                },
+                                {
+                                    receptor: oferta.autor
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    emisor: oferta.autor
+                                },
+                                {
+                                    receptor: res.usuario
+                                }
+                            ]
+                        }
+                    ]};
+                gestorBD.obtenerMensajes(criterio, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(mensajes));
+                    }
+                });
+            }
+        });
+    });
+
+    app.get("/api/mensaje/eliminar/:id", function (req, res) {
+        let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                let oferta = ofertas[0];
+                let criterio = {$or: [
+                        {$and: [
+                                {
+                                    emisor: res.usuario
+                                },
+                                {
+                                    receptor: oferta.autor
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    emisor: oferta.autor
+                                },
+                                {
+                                    receptor: res.usuario
+                                }
+                            ]
+                        }
+                    ]};
+                gestorBD.eliminarMensajes(criterio, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(mensajes));
+                    }
+                });
+            }
+        });
+    });
+
 }

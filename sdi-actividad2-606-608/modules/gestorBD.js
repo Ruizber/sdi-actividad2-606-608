@@ -128,6 +128,43 @@ module.exports = {
             }
         });
     },
+
+    insertarMensaje: function (mensaje, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.insert(mensaje, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]);
+                        console.log("Se ha añadido el mensaje")
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    pasarMensajeLeido: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.update(criterio, {$set: {leido: true}}, function (err, resultado) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(resultado);
+                    }
+                });
+            }
+            db.close();
+        });
+    },
+
     obtenerCompras: function (criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
@@ -139,6 +176,41 @@ module.exports = {
                         funcionCallback(null);
                     } else {
                         funcionCallback(usuarios);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    obtenerMensajes: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.find(criterio).toArray(function (err, canciones) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(canciones);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+    eliminarMensajes: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.remove(criterio, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
                     }
                     db.close();
                 });

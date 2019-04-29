@@ -63,6 +63,10 @@ routerUsuarioToken.use(function (req, res, next) {
 
 // Aplicar routerUsuarioToken
 app.use('/api/oferta', routerUsuarioToken);
+app.use('/api/mensaje/oferta/:id', routerUsuarioToken);
+app.use('/api/mensaje/leido/:id', routerUsuarioToken);
+app.use('/api/conversacion/oferta/:id', routerUsuarioToken);
+app.use('/api/mensaje/eliminar/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
