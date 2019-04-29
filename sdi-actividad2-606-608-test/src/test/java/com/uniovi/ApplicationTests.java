@@ -6,25 +6,16 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
 import com.uniovi.util.SeleniumUtils;
 
 
-//Ordenamos las pruebas por el nombre del método
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class ApplicationTests {
 
 	
@@ -36,7 +27,7 @@ public class ApplicationTests {
 	static String Geckdriver022 = "C:\\Users\\Fernando Ruiz\\Desktop\\3º Curso 2º Semestre\\SDI\\Lab 5\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox64, Geckdriver022);
-	static String URL = "http://localhost:8090";
+	static String URL = "http://localhost:8081";
 	static String URLRemota = "http://52.39.96.241:8090";
 
 	public static WebDriver getDriver(String PathFirefox, String Geckdriver) {
@@ -69,188 +60,208 @@ public class ApplicationTests {
 
 	// PR01. Registrarse como usuario /
 	@Test
-	public void testRegistrar1() throws Exception {
+	public void testRegistrarDatosValidos() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Registrate")).click();
+		driver.findElement(By.id("registrarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("prueba6");
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("prueba6");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("prueba6");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("prueba6");
+		driver.findElement(By.name("repassword")).clear();
+		driver.findElement(By.name("repassword")).sendKeys("prueba6");
+		driver.findElement(By.id("buttonRegistrarse")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mCompras"));
+	} 
+	
+	@Test
+	public void testRegistrarEmailVacio() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.id("registrarse")).click();
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("prueba6");
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("prueba6");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("prueba6");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("prueba6");
+		driver.findElement(By.name("repassword")).clear();
+		driver.findElement(By.name("repassword")).sendKeys("prueba6");
+		driver.findElement(By.id("buttonRegistrarse")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mCompras"));
+	} 
+
+
+	@Test
+	public void testRegistrarContraseñaRepetidaIncorrecta() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.id("registrarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba17@prueba17.com");
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("prueba17");
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("prueba17");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("prueba17");
+		driver.findElement(By.name("repassword")).clear();
+		driver.findElement(By.name("repassword")).sendKeys("pruebaprueba");
+		driver.findElement(By.id("buttonRegistrarse")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
+	}
+
+	@Test
+	public void testRegistrarEmailExistente() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.id("registrarse")).click();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
-		driver.findElement(By.name("name")).clear();
-		driver.findElement(By.name("name")).sendKeys("Fernando");
-		driver.findElement(By.name("surname")).clear();
-		driver.findElement(By.name("surname")).sendKeys("Ruiz");
-		driver.findElement(By.name("surname")).click();
-		driver.findElement(By.name("surname")).clear();
-		driver.findElement(By.name("surname")).sendKeys("Ruiz Berciano");
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("Fernando");
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("Ruiz Berciano");
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("holahola");
 		driver.findElement(By.name("repassword")).clear();
 		driver.findElement(By.name("repassword")).sendKeys("holahola");
 		driver.findElement(By.id("buttonRegistrarse")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
 	}
-
-	@Test
-	public void testRegistrar2() throws Exception {
-		driver.get(URL + "/signup");
-		driver.findElement(By.linkText("Registrate")).click();
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("holahola");
-		driver.findElement(By.name("repassword")).click();
-		driver.findElement(By.name("repassword")).clear();
-		driver.findElement(By.name("repassword")).sendKeys("holahola");
-		driver.findElement(By.id("buttonRegistrarse")).click();
-	}
-
-	@Test
-	public void testRegistrar3() throws Exception {
-		driver.get(URL + "/signup");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("soyfer@gmail.com");
-		driver.findElement(By.name("name")).click();
-		driver.findElement(By.name("name")).clear();
-		driver.findElement(By.name("name")).sendKeys("Fernando");
-		driver.findElement(By.name("surname")).clear();
-		driver.findElement(By.name("surname")).sendKeys("Ruiz Berciano");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("holahola");
-		driver.findElement(By.name("repassword")).clear();
-		driver.findElement(By.name("repassword")).sendKeys("holahol");
-		driver.findElement(By.id("buttonRegistrarse")).click();
-	}
-
-	@Test
-	public void testRegistrar4() throws Exception {
-		driver.get(URL + "/signup");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("pmartinez@gmail.com");
-		driver.findElement(By.name("name")).click();
-		driver.findElement(By.name("name")).clear();
-		driver.findElement(By.name("name")).sendKeys("Pablo");
-		driver.findElement(By.name("surname")).clear();
-		driver.findElement(By.name("surname")).sendKeys("Martinez Arango");
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("holahola");
-		driver.findElement(By.name("repassword")).clear();
-		driver.findElement(By.name("repassword")).sendKeys("holahola");
-		driver.findElement(By.id("buttonRegistrarse")).click();
-	}
+	
 
 	// PR02. Inicio de sesión /
 	@Test
-	public void testInicioSesion1() throws Exception {
+	public void testInicioSesionDatosValidos() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("admin@email.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		SeleniumUtils.textoPresentePagina(driver, "admin@email.com");
-	}
-
-	@Test
-	public void testInicioSesion2() throws Exception {
-		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("pmartinez@gmail.com");
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("123456");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		SeleniumUtils.textoPresentePagina(driver, "pmartinez@gmail.com");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mCompras"));
 	}
 
 	@Test
-	public void testInicioSesion3() throws Exception {
+	public void testInicioSesionContraseñaErronea() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.id("buttonLoggearse")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Identifícate");
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("1234568");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
 	}
 
 	@Test
-	public void testInicioSesion4() throws Exception {
+	public void testInicioSesionContraseñaVacia() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("pmartinez@gmail.com");
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
+	}
+
+	@Test
+	public void testInicioSesionEmailInexistente() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("emailnoexistente@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("fehwuiduw");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Identifícate");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
 	}
 
-	@Test
-	public void testInicioSesion5() throws Exception {
-		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("dnjkdnasdldwh");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("dhahd");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Identifícate");
-	}
 
 	@Test
-	public void testFinDeSesión1() throws Exception {
+	public void testFinDeSesiónIrLogin() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("pmartinez@gmail.com");
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("123456");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		driver.findElement(By.linkText("Desconectar")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Identifícate");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("desconectarse")).click();
+		driver.findElement(By.id("registrarse"));
+		driver.findElement(By.id("identificarse"));
 	}
 	@Test
 	public void testFinDeSesión2() throws Exception {
 		driver.get(URL);
-		SeleniumUtils.textoNoPresentePagina(driver, "Desconectar");
+		SeleniumUtils.textoNoPresentePagina(driver, "Cerrar sesión");
 	}
 
 	@Test
-	public void testListadoUsuarios1() throws Exception {
+	public void testListadoUsuarios() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username")).sendKeys("admin@email.com");
+		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@admin.com");
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.id("buttonLoggearse")).click();
-		driver.findElement(By.linkText("Gestión de Usuarios")).click();
-		driver.findElement(By.linkText("Ver Usuarios")).click();
-		SeleniumUtils.textoPresentePagina(driver, "pmartinez@gmail.com");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("mUsuarios")).click();
+		SeleniumUtils.textoPresentePagina(driver, "ruizbolyt@gmail.com");
 	}
 	
+	
+	/*
+	 * Continuar aqui
+	 */
+	
 	@Test
-	public void testXBorradoUsuarios1() throws Exception {
+	public void testBorradoUsuariosPrimerUsuario() throws Exception {
 	    driver.get(URL);
 	    driver.findElement(By.linkText("Inicia sesión")).click();
-	    driver.findElement(By.name("username")).click();
-	    driver.findElement(By.name("username")).clear();
-	    driver.findElement(By.name("username")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("buttonLoggearse")).click();
+	    driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@admin.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("identificarseButton")).click();
 	    driver.findElement(By.linkText("Gestión de Usuarios")).click();
 	    driver.findElement(By.linkText("Ver Usuarios")).click();
 	    driver.findElement(By.id("checkBox")).click();
@@ -259,16 +270,15 @@ public class ApplicationTests {
 	 }
 	
 	@Test
-	  public void testXBorradoUsuarios2() throws Exception {
+	  public void testBorradoUsuariosUltimoUsuario() throws Exception {
 	    driver.get(URL);
-	    driver.findElement(By.linkText("Inicia sesión")).click();
-	    driver.findElement(By.name("username")).click();
-	    driver.findElement(By.name("username")).clear();
-	    driver.findElement(By.name("username")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("buttonLoggearse")).click();
+	    driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@admin.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("identificarseButton")).click();
 	    driver.findElement(By.linkText("Gestión de Usuarios")).click();
 	    driver.findElement(By.linkText("Ver Usuarios")).click();
 	    driver.findElement(By.id("checkBox")).click();
@@ -277,29 +287,15 @@ public class ApplicationTests {
 	 }
 	
 	@Test
-	  public void testXBorradoUsuarios3() throws Exception {
+	  public void testBorradoUsuariosTresUsuarios() throws Exception {
 	    driver.get(URL);
-	    driver.findElement(By.linkText("Registrate")).click();
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("pablo@gmail.com");
-	    driver.findElement(By.name("name")).clear();
-	    driver.findElement(By.name("name")).sendKeys("Pablo");
-	    driver.findElement(By.name("surname")).clear();
-	    driver.findElement(By.name("surname")).sendKeys("Fernandez Pelaez");
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("holahola");
-	    driver.findElement(By.name("repassword")).clear();
-	    driver.findElement(By.name("repassword")).sendKeys("holahola");
-	    driver.findElement(By.id("buttonRegistrarse")).click();
-	    driver.findElement(By.linkText("Desconectar")).click();
-	    driver.findElement(By.name("username")).click();
-	    driver.findElement(By.name("username")).clear();
-	    driver.findElement(By.name("username")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("buttonLoggearse")).click();
+	    driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@admin.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("identificarseButton")).click();
 	    driver.findElement(By.linkText("Gestión de Usuarios")).click();
 	    driver.findElement(By.linkText("Ver Usuarios")).click();
 	    driver.findElement(By.id("checkBox")).click();
@@ -587,26 +583,7 @@ public class ApplicationTests {
 		driver.findElement(By.id("btnEnglish")).click();
 		SeleniumUtils.textoPresentePagina(driver, "Add Sale");
 	}
-	@Test
-	public void testaInternacionalizacion4() throws Exception {
-		driver.get(URL);
-		driver.findElement(By.linkText("Inicia sesión")).click();
-	    driver.findElement(By.name("username")).click();
-	    driver.findElement(By.name("username")).clear();
-	    driver.findElement(By.name("username")).sendKeys("pmartinez@gmail.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("123456");
-	    driver.findElement(By.id("buttonLoggearse")).click();
-	    driver.findElement(By.linkText("Gestion de Ofertas")).click();
-	    driver.findElement(By.linkText("Buscar Ofertas")).click();
-	    driver.findElement(By.id("btnLanguage")).click();
-	    driver.findElement(By.id("btnSpanish")).click();
-	    driver.findElement(By.id("btnLanguage")).click();
-		driver.findElement(By.id("btnEnglish")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Last");
-		SeleniumUtils.textoPresentePagina(driver, "First");
-	}
+	
 	
 	@Test
 	public void testSeguridad1() throws Exception {
