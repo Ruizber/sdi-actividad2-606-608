@@ -23,6 +23,20 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
+    app.get('/oferta/eliminar/:id', function (req, res) {
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.eliminarOferta(criterio, function (ofertas) {
+            if (ofertas === null) {
+                res.redirect("/publicaciones" +
+                    "?mensaje=Error al eliminar la oferta" +
+                    "&tipoMensaje=alert-danger ");
+            } else {
+                res.redirect("/publicaciones" +
+                    "?mensaje=La oferta se elimino correctamente");
+            }
+        });
+    });
+
     app.post("/oferta", function (req, res) {
         if (req.session.usuario === null) {
             res.redirect("/tienda");
@@ -86,16 +100,7 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-    app.get('/oferta/eliminar/:id', function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.eliminarOferta(criterio, function (ofertas) {
-            if (ofertas === null) {
-                res.send(respuesta);
-            } else {
-                res.redirect("/publicaciones");
-            }
-        });
-    });
+
 
     app.get('/oferta/comprar/:id', function (req, res) {
         let ofertaId = gestorBD.mongo.ObjectID(req.params.id);
