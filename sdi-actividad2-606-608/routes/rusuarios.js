@@ -36,7 +36,8 @@ module.exports = function (app, swig, gestorBD) {
                 if (id === undefined) {
                     res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
                 } else {
-                    res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+                    req.session.usuario = usuario;
+                    res.redirect("/publicaciones?mensaje=Nuevo usuario registrado");
                 }
             });
         }
@@ -113,20 +114,20 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/delete', function (req, res) {
-        let idsUsers = req.body.idsUsers;
-        if (!Array.isArray(idsUsers)) {
-            let aux = idsUsers;
-            idsUsers = [];
-            idsUsers.push(aux);
+        let idsUser = req.body.idsUser;
+        if (!Array.isArray(idsUser)) {
+            let aux = idsUser;
+            idsUser = [];
+            idsUser.push(aux);
         }
         let criterio = {
-            email: req.body.email
+            email: {$in: idsUser}
         };
         gestorBD.eliminarUsuarios(criterio, function (usuarios) {
             if (usuarios === undefined || usuarios.length === 0) {
-                res.redirect("/listarUsuarios");
+                res.redirect("/listarUsuarios?mensaje=Los usuarios no pudieron eliminarse");
             } else {
-                res.redirect("/listarUsuarios");
+                res.redirect("/listarUsuarios?mensaje=Los usuarios se eliminaron correctamente");
             }
         });
     });

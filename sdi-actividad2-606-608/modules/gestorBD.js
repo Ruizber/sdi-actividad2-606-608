@@ -10,8 +10,8 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                let collection = db.collection('usuarios');
-                collection.remove(usuarios, function (err, result) {
+                var collection = db.collection('usuarios');
+                collection.removeMany(usuarios, function (err, result) {
                     if (err) {
                         funcionCallback(null);
                     } else {
