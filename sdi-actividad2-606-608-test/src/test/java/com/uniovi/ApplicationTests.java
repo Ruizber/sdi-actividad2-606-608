@@ -286,7 +286,7 @@ public class ApplicationTests {
 	}
 
 	@Test
-	public void testAltaOferta1() throws Exception {
+	public void testAltaOfertaDatosValidos() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
@@ -311,9 +311,9 @@ public class ApplicationTests {
 	}
 
 	@Test
-	public void testAltaOferta2() throws Exception {
+	public void testAltaOfertaDatosInvalidos() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.id("identificarse")).click();
+		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
@@ -329,7 +329,9 @@ public class ApplicationTests {
 		driver.findElement(By.name("precio")).clear();
 		driver.findElement(By.name("precio")).sendKeys("100");
 		driver.findElement(By.id("agregar")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Agregar Oferta");
+		SeleniumUtils.textoPresentePagina(driver, "Agregar oferta");
+		SeleniumUtils.textoPresentePagina(driver, "Detalle");
+		SeleniumUtils.textoPresentePagina(driver, "Precio (€)");
 	}
 
 	@Test
