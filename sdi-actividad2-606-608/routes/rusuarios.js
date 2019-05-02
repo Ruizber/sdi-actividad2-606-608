@@ -60,16 +60,21 @@ module.exports = function (app, swig, gestorBD) {
                 password: seguro
             };
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-                if (usuarios === undefined || usuarios.length === 0) {
-                    req.session.usuario = undefined;
-                    res.redirect("/identificarse" +
-                        "?mensaje=Email o password incorrecto" +
-                        "&tipoMensaje=alert-danger ");
-                } else {
-                    req.session.usuario = usuarios[0];
-                    res.redirect("/publicaciones");
+                    if (usuarios === undefined || usuarios.length === 0) {
+                        req.session.usuario = undefined;
+                        res.redirect("/identificarse" +
+                            "?mensaje=Email o password incorrecto" +
+                            "&tipoMensaje=alert-danger ");
+                    } else {
+                        req.session.usuario = usuarios[0];
+                        if (usuarios[0].rol == 'admin')
+                            res.redirect("/listarUsuarios");
+                        else
+                            res.redirect("/publicaciones");
+
+                    }
                 }
-            });
+            );
         }
     });
 
@@ -125,4 +130,5 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-};
+}
+;

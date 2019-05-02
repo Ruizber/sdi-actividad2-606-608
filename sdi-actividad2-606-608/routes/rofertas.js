@@ -11,12 +11,12 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas === null) {
-                res.send(respuesta);
+                res.redirect("/tienda?mensaje=No se ha encontrado la oferta");
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
                     {
                         oferta: ofertas[0],
-                        usuario: req.session.usuario,
+                        usuario: req.session.usuario
                     });
                 res.send(respuesta);
             }
@@ -31,7 +31,7 @@ module.exports = function (app, swig, gestorBD) {
         let oferta = {
             nombre: req.body.nombre,
             detalle: req.body.detalle,
-            fecha: req.body.fecha,
+            fecha: new Date(),
             precio: req.body.precio,
             autor: req.session.usuario.email
         };
@@ -46,9 +46,10 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get("/tienda", function (req, res) {
         let criterio = {
-                autor: {
-                     $ne: req.session.usuario.email
-            }};
+            autor: {
+                $ne: req.session.usuario.email
+            }
+        };
         if (req.query.busqueda !== undefined) {
             criterio = {
                 "nombre": {
@@ -95,15 +96,17 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
+
     app.get('/oferta/comprar/:id', function (req, res) {
         let ofertaId = gestorBD.mongo.ObjectID(req.params.id);
         let compra = {
             usuario: req.session.usuario,
             ofertaId: ofertaId
-        }
+        };
+
         gestorBD.insertarCompra(compra, function (idCompra) {
             if (idCompra === null) {
-                res.send(respuesta);
+                res.redirect("/tienda?error=Fallo al comprar");
             } else {
                 res.redirect("/compras");
             }
