@@ -5,6 +5,113 @@ module.exports = {
         this.mongo = mongo;
         this.app = app;
     },
+    restarDinero: function (ofertaId, email, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                var criterio = {"_id": ofertaId};
+                collection.find(criterio).toArray(function (err, ofertas) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        var precioOferta = ofertas[0].precio;
+                        collection = db.collection('usuarios');
+                        criterio = {"email": email};
+                        collection.find(criterio).toArray(function (err, usuarios) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                var dineroUsuario = usuarios[0].dinero;
+                                console.log("Dinero del usuario: " + dineroUsuario);
+                                console.log("Dinero del oferta: " + precioOferta);
+                                if (dineroUsuario == null || precioOferta == null) {
+                                    funcionCallback(null);
+                                } else {
+                                    var dineroFinal = dineroUsuario - precioOferta;
+                                    if (dineroFinal < 0) {
+                                        funcionCallback(dineroFinal);
+                                    } else {
+                                        collection.update(criterio, {$set: {"dinero": dineroFinal}}, function (err, result) {
+                                            if (err) {
+                                                funcionCallback(null);
+                                            } else {
+                                                funcionCallback(dineroFinal);
+                                            }
+                                            db.close();
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    ,
+    sumarDinero: function (ofertaId, email, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                var criterio = {"_id": ofertaId};
+                collection.find(criterio).toArray(function (err, ofertas) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        var precioOferta = ofertas[0].precio;
+                        collection = db.collection('usuarios');
+                        criterio = {"email": email};
+                        collection.find(criterio).toArray(function (err, usuarios) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                var dineroUsuario = usuarios[0].dinero;
+                                if (dineroUsuario == null || precioOferta == null) {
+                                    funcionCallback(null);
+                                } else {
+                                    var dineroFinal = Number.parseFloat(dineroUsuario) + Number.parseFloat(precioOferta);
+                                    if (dineroFinal < 0) {
+                                        funcionCallback(dineroFinal);
+                                    } else {
+                                        collection.update(criterio, {$set: {"dinero": dineroFinal}}, function (err, result) {
+                                            if (err) {
+                                                funcionCallback(null);
+                                            } else {
+                                                funcionCallback(dineroFinal);
+                                            }
+                                            db.close();
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    ,
+    insertarOferta: function (oferta, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                collection.insert(oferta, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
     eliminarUsuarios: function (usuarios, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
@@ -133,7 +240,6 @@ module.exports = {
                 collection.count(criterio, function (err, count) {
                     collection.find(criterio).skip((pg - 1) * 5).limit(5)
                         .toArray(function (err, ofertas) {
-                            console.log(ofertas)
                             if (err) {
                                 funcionCallback(null);
                             } else {

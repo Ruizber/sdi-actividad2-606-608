@@ -1,4 +1,53 @@
 module.exports = function (app, swig, gestorBD) {
+    app.get('/oferta/comprar/:id', function (req, res) {
+        var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
+        gestorBD.restarDinero(ofertaId, req.session.usuario.email, function (dineroActual) {
+            if (dineroActual == null) {
+                res.redirect("/tienda?mensaje=Error al comprar");
+            } else if (dineroActual < 0) {
+                res.redirect("/tienda?mensaje=No tienes suficiente dinero");
+            } else {
+                var criterio = {"_id": ofertaId};
+                gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                    if (ofertas == null) {
+                        res.redirect("/tienda?mensaje=La oferta no existe");
+                    } else {
+                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function (dineroPropietario) {
+                            if (dineroPropietario == null) {
+                                res.redirect("/tienda?mensaje=Error al comprar");
+                            } else {
+                                gestorBD.insertarCompra(ofertaId, req.session.user.email, function (idCompra) {
+                                    if (idCompra == null) {
+                                        res.redirect("/tienda?mensaje=Error al comprar");
+                                    } else {
+                                        req.session.usuario.dinero = dineroActual;
+                                        res.redirect("/compras");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    app.get('/compras', function (req, res) {
+        var criterio = {"comprador": req.session.usuario.email};
+        gestorBD.obtenerOfertas(criterio, function (compras) {
+            if (compras == null) {
+                res.send("Error al listar ");
+            } else {
+                var respuesta = swig.renderFile('views/bcompras.html',
+                    {
+                        usuario: req.session.usuario,
+                        ofertas: compras
+                    });
+                res.send(respuesta);
+            }
+        });
+    });
+
     app.get('/ofertas/agregar', function (req, res) {
         if (req.session.usuario === null) {
             res.redirect("/tienda");
@@ -6,21 +55,6 @@ module.exports = function (app, swig, gestorBD) {
         }
         var respuesta = swig.renderFile('views/bagregar.html', {});
         res.send(respuesta);
-    });
-    app.get('/oferta/:id', function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            if (ofertas === null) {
-                res.redirect("/tienda?mensaje=No se ha encontrado la oferta");
-            } else {
-                var respuesta = swig.renderFile('views/boferta.html',
-                    {
-                        oferta: ofertas[0],
-                        usuario: req.session.usuario
-                    });
-                res.send(respuesta);
-            }
-        });
     });
 
     app.get('/oferta/eliminar/:id', function (req, res) {
@@ -33,6 +67,22 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 res.redirect("/publicaciones" +
                     "?mensaje=La oferta se elimino correctamente");
+            }
+        });
+    });
+
+    app.get('/oferta/:id', function (req, res) {
+        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas === null) {
+                res.redirect("/tienda?mensaje=No se ha encontrado la oferta");
+            } else {
+                var respuesta = swig.renderFile('views/boferta.html',
+                    {
+                        oferta: ofertas[0],
+                        usuario: req.session.usuario
+                    });
+                res.send(respuesta);
             }
         });
     });
