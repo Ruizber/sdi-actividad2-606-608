@@ -1,43 +1,51 @@
 module.exports = function (app, swig, gestorBD) {
-    app.get('/oferta/comprar/:id', function (req, res) {
-        var ofertaId = {
-            _id: gestorBD.mongo.ObjectID(req.params.id)
-        };
-        gestorBD.obtenerOfertas(ofertaId, function (ofertas) {
-            if (ofertas == null) {
-                res.redirect("/tienda?mensaje=La oferta no existe");
-            } else {
-                let usuario = req.session.usuario;
-                if (usuario.dinero < ofertas[0].precio) {
-                    res.redirect("/tienda?mensaje=No tiene dinero suficiente");
-                } else {
-                    let criterio = {
-                        _id: usuario._id
-                    }
 
-                    let actualizacion = {
-                        $set: {
-                            dinero: usuario.dinero - ofertas[0].dinero
-                        }
+    app.get("/oferta/compradas", function (req, res) {
+        var criterio = {
+            buyer: req.session.usuario.email,
+            valid: true
+        };
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            var respuesta = swig.renderFile('/bcompras.html', {salesList: ofertas});
+            res.send(respuesta);
+        });
+    });
+
+    app.get('/oferta/comprar/:id', function (req, res) {
+        var criterio = {_id: gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null || ofertas.length == 0) {
+                res.redirect("/tienda?mensaje=La compra no pudo completarse");
+            } else {
+                if (ofertas[0].precio <= req.session.usuario.dinero) {
+                    var nuevoCriterio = {
+                        onsale: false,
+                        comprador: req.session.usuario.email
                     };
-                    gestorBD.actualizarUsuario(criterio, actualizacion, function (dineroActual) {
-                        if (dineroActual == null) {
-                            res.redirect("/tienda?mensaje=Error al comprar");
+                    var criterioComprador = {
+                        email: req.session.usuario.email
+                    };
+                    var nuevoCriterioComprador = {
+                        dinero: req.session.usuario.dinero - ofertas[0].precio
+                    };
+                    gestorBD.comprarOferta(criterio, nuevoCriterio, function (ofertas) {
+                        if (ofertas == null || ofertas.length == 0) {
+                            res.redirect("/tienda?mensaje=La oferta no pudo comprarse correctamente");
                         } else {
-                            res.redirect("/tienda?mensaje=No tienes suficiente dinero");
+                            gestorBD.actualizarDinero(criterioComprador, nuevoCriterioComprador, function (usuarios) {
+                                if (usuarios == null || usuarios.length == 0) {
+                                    res.redirect("/tienda?mensaje=La oferta no pudo comprarse correctamente");
+                                } else {
+                                    res.redirect("/compras?mensaje=La oferta se compró correctamente");
+                                }
+                            })
                         }
                     });
-                    gestorBD.insertarCompra(ofertaId, usuario.email, function (idCompra) {
-                        if (idCompra == null) {
-                            res.redirect("/tienda?mensaje=Error al comprar");
-                        } else {
-                            usuario.dinero = dineroActual;
-                            res.redirect("/compras");
-                        }
-                    });
+                } else {
+                    res.redirect("/sale/all?mensaje=No tienes suficiente dinero para adquirir esa oferta");
                 }
             }
-        });
+        })
     });
 
     app.get('/compras', function (req, res) {
@@ -204,7 +212,6 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas === null) {
                 res.send("Error al listar ");
             } else {
-                console.log(req.session.usuario);
                 var respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
                         usuario: req.session.usuario,
