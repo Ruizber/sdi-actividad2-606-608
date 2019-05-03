@@ -1,33 +1,41 @@
 module.exports = function (app, swig, gestorBD) {
     app.get('/oferta/comprar/:id', function (req, res) {
-        var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
-        gestorBD.restarDinero(ofertaId, req.session.usuario.email, function (dineroActual) {
-            if (dineroActual == null) {
-                res.redirect("/tienda?mensaje=Error al comprar");
-            } else if (dineroActual < 0) {
-                res.redirect("/tienda?mensaje=No tienes suficiente dinero");
+        var ofertaId = {
+            _id: gestorBD.mongo.ObjectID(req.params.id)
+        };
+        gestorBD.obtenerOfertas(ofertaId, function (ofertas) {
+            if (ofertas == null) {
+                res.redirect("/tienda?mensaje=La oferta no existe");
             } else {
-                var criterio = {"_id": ofertaId};
-                gestorBD.obtenerOfertas(criterio, function (ofertas) {
-                    if (ofertas == null) {
-                        res.redirect("/tienda?mensaje=La oferta no existe");
-                    } else {
-                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function (dineroPropietario) {
-                            if (dineroPropietario == null) {
-                                res.redirect("/tienda?mensaje=Error al comprar");
-                            } else {
-                                gestorBD.insertarCompra(ofertaId, req.session.user.email, function (idCompra) {
-                                    if (idCompra == null) {
-                                        res.redirect("/tienda?mensaje=Error al comprar");
-                                    } else {
-                                        req.session.usuario.dinero = dineroActual;
-                                        res.redirect("/compras");
-                                    }
-                                });
-                            }
-                        });
+                let usuario = req.session.usuario;
+                if (usuario.dinero < ofertas[0].precio) {
+                    res.redirect("/tienda?mensaje=No tiene dinero suficiente");
+                } else {
+                    let criterio = {
+                        _id: usuario._id
                     }
-                });
+
+                    let actualizacion = {
+                        $set: {
+                            dinero: usuario.dinero - ofertas[0].dinero
+                        }
+                    };
+                    gestorBD.actualizarUsuario(criterio, actualizacion, function (dineroActual) {
+                        if (dineroActual == null) {
+                            res.redirect("/tienda?mensaje=Error al comprar");
+                        } else {
+                            res.redirect("/tienda?mensaje=No tienes suficiente dinero");
+                        }
+                    });
+                    gestorBD.insertarCompra(ofertaId, usuario.email, function (idCompra) {
+                        if (idCompra == null) {
+                            res.redirect("/tienda?mensaje=Error al comprar");
+                        } else {
+                            usuario.dinero = dineroActual;
+                            res.redirect("/compras");
+                        }
+                    });
+                }
             }
         });
     });
