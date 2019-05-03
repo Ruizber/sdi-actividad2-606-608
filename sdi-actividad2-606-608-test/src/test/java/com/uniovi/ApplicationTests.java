@@ -10,6 +10,7 @@ import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import java.text.ParseException;
 
 import com.uniovi.util.SeleniumUtils;
 
@@ -43,7 +44,9 @@ public class ApplicationTests {
 	}
 
 	@BeforeClass
-	static public void begin() {
+	static public void begin() throws ParseException {
+		MongoDBInsertion mongoDBInsertion = new MongoDBInsertion();
+		mongoDBInsertion.insertData();
 	}
 
 	@AfterClass
