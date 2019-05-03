@@ -32,14 +32,23 @@ module.exports = function (app, swig, gestorBD) {
                 rol: 'usuario',
                 password: seguro
             };
-            gestorBD.insertarUsuario(usuario, function (id) {
-                if (id === undefined) {
-                    res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
+            let criterio = {
+                email: req.body.email
+            };
+            gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+                if (usuarios != null && usuarios.length !== 0) {
+                    res.redirect("/registrarse?mensaje=El email ya está registrado&tipoMensaje=alert-danger");
                 } else {
-                    req.session.usuario = usuario;
-                    res.redirect("/publicaciones?mensaje=Nuevo usuario registrado");
+                    gestorBD.insertarUsuario(usuario, function (id) {
+                        if (id === undefined) {
+                            res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
+                        } else {
+                            req.session.usuario = usuario;
+                            res.redirect("/publicaciones?mensaje=Nuevo usuario registrado");
+                        }
+                    })
                 }
-            });
+            })
         }
     });
 

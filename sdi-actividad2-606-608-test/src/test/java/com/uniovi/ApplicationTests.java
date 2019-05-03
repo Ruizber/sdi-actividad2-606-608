@@ -4,13 +4,16 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.util.SeleniumUtils;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationTests {
 
 	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
@@ -75,9 +78,9 @@ public class ApplicationTests {
 	public void testRegistrarEmailVacio() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Registrate")).click();
-		driver.findElement(By.name("nombre")).click();
-		driver.findElement(By.name("nombre")).clear();
-		driver.findElement(By.name("nombre")).sendKeys("prueba6");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6");
 		driver.findElement(By.name("apellidos")).clear();
 		driver.findElement(By.name("apellidos")).sendKeys("prueba6");
 		driver.findElement(By.name("apellidos")).click();
@@ -115,12 +118,11 @@ public class ApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "Las contraseñas deben ser iguales");
 	}
 
-	/*
-	//Mirar este test
+
 	@Test
 	public void testRegistrarEmailExistente() throws Exception {
 		driver.get(URL);
-		driver.findElement(By.id("registrarse")).click();
+		driver.findElement(By.linkText("Registrate")).click();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
@@ -129,16 +131,16 @@ public class ApplicationTests {
 		driver.findElement(By.name("nombre")).sendKeys("Fernando");
 		driver.findElement(By.name("apellidos")).clear();
 		driver.findElement(By.name("apellidos")).sendKeys("Ruiz Berciano");
+		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("holahola");
 		driver.findElement(By.name("repassword")).clear();
 		driver.findElement(By.name("repassword")).sendKeys("holahola");
-		driver.findElement(By.id("buttonRegistrarse")).click();
-		driver.findElement(By.id("registrarse"));
-		driver.findElement(By.id("identificarse"));
-	}*/
+		driver.findElement(By.id("Resgistration")).click();
+		SeleniumUtils.textoPresentePagina(driver, "El email ya está registrado");
+	}
 
-	// PR02. Inicio de sesión /
+
 	@Test
 	public void testInicioSesionDatosValidos() throws Exception {
 		driver.get(URL);
@@ -224,7 +226,7 @@ public class ApplicationTests {
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("admin@admin.com");
+		driver.findElement(By.name("email")).sendKeys("admin@email.com");
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("admin");
 		driver.findElement(By.id("identificarseButton")).click();
@@ -237,7 +239,7 @@ public class ApplicationTests {
 	/*
 	//Mirar
 	@Test
-	public void testBorradoUsuariosPrimerUsuario() throws Exception {
+	public void testXBorradoUsuariosPrimerUsuario() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
@@ -252,7 +254,7 @@ public class ApplicationTests {
 	}
 	
 	@Test
-	public void testBorradoUsuariosUltimoUsuario() throws Exception {
+	public void testXBorradoUsuariosUltimoUsuario() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
@@ -267,7 +269,7 @@ public class ApplicationTests {
 	}
 
 	@Test
-	public void testBorradoUsuariosTresUsuarios() throws Exception {
+	public void testXBorradoUsuariosTresUsuarios() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
@@ -385,8 +387,7 @@ public class ApplicationTests {
 		driver.findElement(By.id("buscador")).clear();
 		driver.findElement(By.id("botonBuscar")).click();
 		SeleniumUtils.textoPresentePagina(driver, "Prueba");
-		SeleniumUtils.textoPresentePagina(driver, "pruebaruiz");
-		SeleniumUtils.textoPresentePagina(driver, "prueba3");
+		SeleniumUtils.textoPresentePagina(driver, "Pablo");
 	}
 
 	@Test
@@ -414,9 +415,9 @@ public class ApplicationTests {
 	public void testComprarOferta1() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username"))
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email"))
 				.sendKeys("fernandoruiz@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
@@ -436,9 +437,9 @@ public class ApplicationTests {
 	public void testComprarOferta2() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username"))
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email"))
 				.sendKeys("fernandoruiz@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
@@ -458,9 +459,9 @@ public class ApplicationTests {
 	public void testComprarOferta3() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username"))
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email"))
 				.sendKeys("fernandoruiz@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
@@ -481,9 +482,9 @@ public class ApplicationTests {
 	public void testListadoOfertasCompradas() throws Exception {
 		driver.get(URL);
 		driver.findElement(By.linkText("Inicia sesión")).click();
-		driver.findElement(By.name("username")).click();
-		driver.findElement(By.name("username")).clear();
-		driver.findElement(By.name("username"))
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email"))
 				.sendKeys("fernandoruiz@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
