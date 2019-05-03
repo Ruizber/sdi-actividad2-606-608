@@ -44,6 +44,7 @@ module.exports = function (app, swig, gestorBD) {
                             res.redirect("/registrarse?mensaje=Error al registrar usuario&tipoMensaje=alert-danger")
                         } else {
                             req.session.usuario = usuario;
+                            delete req.session.usuario.password;
                             res.redirect("/publicaciones?mensaje=Nuevo usuario registrado");
                         }
                     })
@@ -77,6 +78,7 @@ module.exports = function (app, swig, gestorBD) {
                             "&tipoMensaje=alert-danger ");
                     } else {
                         req.session.usuario = usuarios[0];
+                        delete req.session.usuario.password;
                         if (usuarios[0].rol == 'admin')
                             res.redirect("/listarUsuarios");
                         else
