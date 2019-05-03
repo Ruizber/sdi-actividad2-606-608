@@ -81,11 +81,13 @@ routerUsuarioSession.use(function (req, res, next) {
 //Aplicar routerUsuarioSession
 app.use("/ofertas/agregar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
+app.use("/oferta/eliminar/:id", routerUsuarioSession);
 app.use("/oferta/comprar", routerUsuarioSession);
 app.use("/ofertas", routerUsuarioSession);
 app.use("/publicaciones", routerUsuarioSession);
 app.use("/tienda", routerUsuarioSession);
 app.use("/compras", routerUsuarioSession);
+
 
 //routerUsuarioAutor
 let routerUsuario = express.Router();
@@ -102,8 +104,7 @@ routerUsuario.use(function (req, res, next) {
         })
 });
 //Aplicar routerUsuarioAutor
-app.use("/oferta/modificar", routerUsuario);
-app.use("/oferta/eliminar", routerUsuario);
+//app.use("/oferta/eliminar/:id", routerUsuario);
 
 app.use(express.static('public'));
 app.set('port', 8081);
