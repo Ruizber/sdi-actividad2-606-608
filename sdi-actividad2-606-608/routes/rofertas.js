@@ -143,16 +143,16 @@ module.exports = function (app, swig, gestorBD) {
             let dateString = mm + '/' + dd + '/' + yyyy;
             let oferta = {
                 nombre: req.body.nombre,
-                detalles: req.body.detalles,
+                detalle: req.body.detalle,
                 precio: req.body.precio,
                 destacada: (req.body.destacada === "on"),
-                propietario: req.session.usuario.email,
+                autor: req.session.usuario.email,
                 fecha: dateString
             };
             if (oferta.destacada && req.session.usuario.dinero < 20) {
                 res.redirect("/ofertas/agregar?mensaje=No tienes suficiente dinero para destacar la oferta");
-            } else if (oferta.nombre == null || oferta.nombre == '' || oferta.detalles == null ||
-                oferta.detalles == '' || oferta.precio == null || oferta.precio <= 0) {
+            } else if (oferta.nombre == null || oferta.nombre == '' || oferta.detalle == null ||
+                oferta.detalle == '' || oferta.precio == null || oferta.precio <= 0) {
                 res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
             } else if (isNaN(oferta.precio)) {
                 res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numérico");
