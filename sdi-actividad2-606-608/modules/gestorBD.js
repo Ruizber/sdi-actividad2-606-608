@@ -6,6 +6,53 @@ module.exports = {
         this.app = app;
     },
 
+    usuarioDestaca: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var usuarios = db.collection('usuarios');
+                usuarios.find(criterio).toArray(function (err, resultado) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        var dinero = Number.parseFloat(resultado[0].dinero);
+                        resultado[0].dinero -= 20;
+                        var money = {$set: resultado[0]};
+                        usuarios.update({email: resultado[0].email}, money, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                funcionCallback(null);
+                            } else {
+                                funcionCallback(result);
+                            }
+                            db.close();
+                        });
+                    }
+                });
+            }
+
+        });
+    },
+
+    destacarOferta: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                collection.update(criterio, {$set: {destacada: true}}, function (err, resultado) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(resultado);
+                    }
+                });
+            }
+            db.close();
+        });
+    },
+
     obtenerCompras: function (criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {

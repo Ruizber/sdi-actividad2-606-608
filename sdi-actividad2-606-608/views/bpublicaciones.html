@@ -24,6 +24,13 @@
             <td>{{ oferta.nombre }}</td>
             <td>{{ oferta.detalle }}</td>
             <td>{{ oferta.precio }}</td>
+            <td>
+                {% if oferta.destacada == null || oferta.destacada == false %}
+                <a class="btn btn-warning" href="/oferta/destacar/{{ oferta._id.toString() }}">Destacar</a> <br>
+                {% else %}
+                <a class="btn btn-warning disabled">Destacar</a> <br>
+                {% endif %}
+            </td>
             <td><a class="btn btn-danger" href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
             </td>
         </tr>
