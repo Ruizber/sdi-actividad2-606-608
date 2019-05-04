@@ -673,4 +673,93 @@ public class ApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "100");
 	}
 
+	@Test
+	public void testWMarcarOfertaComoDestacada1() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.linkText("Identifícate")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba@prueba.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("AgregarOferta")).click();
+		driver.findElement(By.id("nombre")).click();
+		driver.findElement(By.id("nombre")).clear();
+		driver.findElement(By.id("nombre")).sendKeys("Destacada1");
+		driver.findElement(By.id("detalle")).clear();
+		driver.findElement(By.id("detalle")).sendKeys("Destacada1");
+		driver.findElement(By.id("precio")).clear();
+		driver.findElement(By.id("precio")).sendKeys("2");
+		driver.findElement(By.id("destacada")).click();
+		driver.findElement(By.id("agregar")).click();
+		SeleniumUtils.textoPresentePagina(driver, "80");
+		driver.findElement(By.id("desconectarse")).click();
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.textoPresentePagina(driver, "DESTACADA");
+	}
+
+	@Test
+	public void testWMarcarOfertaComoDestacada2() throws Exception {
+		driver.get(URL);
+		driver.get(URL);
+		driver.findElement(By.linkText("Identifícate")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba@prueba.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("AgregarOferta")).click();
+		driver.findElement(By.id("nombre")).click();
+		driver.findElement(By.id("nombre")).clear();
+		driver.findElement(By.id("nombre")).sendKeys("DestacarLuego");
+		driver.findElement(By.id("detalle")).clear();
+		driver.findElement(By.id("detalle")).sendKeys("DestacarLuego");
+		driver.findElement(By.id("precio")).clear();
+		driver.findElement(By.id("precio")).sendKeys("3");
+		driver.findElement(By.id("agregar")).click();
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='DestacarLuego'])[2]/following::a[1]"))
+				.click();
+		SeleniumUtils.textoPresentePagina(driver, "Publicacion destacada");
+		driver.findElement(By.id("desconectarse")).click();
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.textoPresentePagina(driver, "DESTACADA");
+	}
+
+	@Test
+	public void testWMarcarOfertaComoDestacada3() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.linkText("Identifícate")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='NuevaOferta'])[1]/following::a[1]"))
+				.click();
+		SeleniumUtils.textoPresentePagina(driver,
+				"No tienes suficiente dinero, necesitas 20€");
+	}
+
 }
