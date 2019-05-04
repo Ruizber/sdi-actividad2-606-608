@@ -2,10 +2,11 @@ module.exports = function (app, swig, gestorBD) {
     app.get("/index", function (req, res) {
         let respuesta = swig.renderFile('views/index.html', {});
         res.send(respuesta);
+        app.get("logger").info('El usuario accedió al index');
     });
 
     app.get('/desconectarse', function (req, res) {
-        app.get("logger").info('El usuario ' + req.session.usuario + " ha cerrado sesión correctamente");
+        app.get("logger").info('El usuario ' + req.session.usuario.email + " ha cerrado sesión correctamente");
         req.session.usuario = undefined;
         res.redirect("/identificarse");
     });
@@ -90,7 +91,7 @@ module.exports = function (app, swig, gestorBD) {
                         app.get("logger").error('Email o password incorrecto');
                     } else {
                         req.session.usuario = usuarios[0];
-                        app.get("logger").info('El usuario ' + req.session.usuario + " se ha logueado correctamente");
+                        app.get("logger").info('El usuario ' + req.session.usuario.email + " se ha logueado correctamente");
                         delete req.session.usuario.password;
                         if (usuarios[0].rol == 'admin')
                             res.redirect("/listarUsuarios");
@@ -104,7 +105,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get('/listarUsuarios', function (req, res) {
-        app.get("logger").info('El usuario ' + req.session.usuario + " lista los usuarios de la aplicación");
+        app.get("logger").info('El usuario ' + req.session.usuario.email + " lista los usuarios de la aplicación");
         let criterioMongo = {
             $and: [
                 {
@@ -127,8 +128,10 @@ module.exports = function (app, swig, gestorBD) {
                     usuarios: usuarios
                 });
                 res.send(respuesta);
+                app.get("logger").info('Se han listado correctamente los usuarios de la aplicación');
             } else {
                 res.redirect("/identificarse");
+                app.get("logger").error('No se han podido listar los usuarios de la aplicación');
             }
         })
     });
@@ -148,7 +151,7 @@ module.exports = function (app, swig, gestorBD) {
                 app.get("logger").error('Los usuarios no pudieron eliminarse');
                 res.redirect("/listarUsuarios?mensaje=Los usuarios no pudieron eliminarse");
             } else {
-
+                app.get("logger").info('Los usuarios se eliminaron correctamente');
                 res.redirect("/listarUsuarios?mensaje=Los usuarios se eliminaron correctamente");
             }
         });

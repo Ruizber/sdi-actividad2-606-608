@@ -3,24 +3,29 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas({_id: req.params.id}, function (ofe) {
             if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
                 res.redirect("/publicaciones?mensaje=El valor de la oferta no es válido&tipoMensaje=alert-danger ");
+                app.get("logger").error('El valor de la oferta no es válido');
             } else {
                 var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
                 if (req.session.usuario.dinero < 20) {
                     res.redirect("/publicaciones?mensaje=No tienes suficiente dinero, necesitas 20€" +
                         "&tipoMensaje=alert-danger ");
+                    app.get("logger").error('No tienes suficiente dinero, necesitas 20€');
                 } else {
                     gestorBD.destacarOferta(criterio, function (ofertas) {
                         if (ofertas == null) {
                             res.redirect("/publicaciones?mensaje=No se puede destacar esta publicacion" +
                                 "&tipoMensaje=alert-danger ");
+                            app.get("logger").error('No se puede destacar esta publicacion');
                         } else {
                             gestorBD.usuarioDestaca({"email": req.session.usuario.email}, function (result) {
                                 if (result == null) {
                                     res.redirect("/publicaciones?mensaje=Error destacando la oferta" +
                                         "&tipoMensaje=alert-danger ");
+                                    app.get("logger").error('Error destacando la oferta');
                                 } else {
                                     req.session.usuario.dinero -= 20;
                                     res.redirect("/publicaciones?mensaje=Publicacion destacada&tipoMensaje=alert-success ");
+                                    app.get("logger").info('Publicacion destacada');
                                 }
                             });
                         }
@@ -38,6 +43,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             var respuesta = swig.renderFile('/bcompras.html', {salesList: ofertas});
             res.send(respuesta);
+            app.get("logger").info('Accediendo a ofertas compradas');
         });
     });
 
@@ -46,6 +52,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length == 0) {
                 res.redirect("/tienda?mensaje=La compra no pudo completarse");
+                app.get("logger").error('La compra no pudo completarse');
             } else {
                 if (ofertas[0].precio <= req.session.usuario.dinero) {
                     var nuevoCriterio = {
@@ -61,18 +68,22 @@ module.exports = function (app, swig, gestorBD) {
                     gestorBD.comprarOferta(criterio, nuevoCriterio, function (ofertas) {
                         if (ofertas == null || ofertas.length == 0) {
                             res.redirect("/tienda?mensaje=La oferta no pudo comprarse correctamente");
+                            app.get("logger").error('La oferta no pudo comprarse correctamente');
                         } else {
                             gestorBD.actualizarDinero(criterioComprador, nuevoCriterioComprador, function (usuarios) {
                                 if (usuarios == null || usuarios.length == 0) {
                                     res.redirect("/tienda?mensaje=La oferta no pudo comprarse correctamente");
+                                    app.get("logger").error('La oferta no pudo comprarse correctamente');
                                 } else {
                                     res.redirect("/compras?mensaje=La oferta se compró correctamente");
+                                    app.get("logger").info('La oferta se compró correctamente');
                                 }
                             })
                         }
                     });
                 } else {
                     res.redirect("/tienda?mensaje=No tienes suficiente dinero para adquirir esa oferta");
+                    app.get("logger").error('No tienes suficiente dinero para adquirir esa oferta');
                 }
             }
         })
@@ -83,6 +94,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (compras) {
             if (compras == null) {
                 res.send("Error al listar ");
+                app.get("logger").error('Error al listar las ofertas');
             } else {
                 var respuesta = swig.renderFile('views/bcompras.html',
                     {
@@ -90,6 +102,7 @@ module.exports = function (app, swig, gestorBD) {
                         ofertas: compras
                     });
                 res.send(respuesta);
+                app.get("logger").info('Las ofertas se listaron corectamente');
             }
         });
     });
@@ -112,9 +125,11 @@ module.exports = function (app, swig, gestorBD) {
                 res.redirect("/publicaciones" +
                     "?mensaje=Error al eliminar la oferta" +
                     "&tipoMensaje=alert-danger ");
+                app.get("logger").error('Error al eliminar la oferta');
             } else {
                 res.redirect("/publicaciones" +
                     "?mensaje=La oferta se elimino correctamente");
+                app.get("logger").info('La oferta se elimino correctamente');
             }
         });
     });
@@ -124,6 +139,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas === null) {
                 res.redirect("/tienda?mensaje=No se ha encontrado la oferta");
+                app.get("logger").error('No se ha encontrado la oferta');
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
                     {
@@ -151,28 +167,35 @@ module.exports = function (app, swig, gestorBD) {
             };
             if (oferta.destacada && req.session.usuario.dinero < 20) {
                 res.redirect("/ofertas/agregar?mensaje=No tienes suficiente dinero para destacar la oferta");
+                app.get("logger").error('No tienes suficiente dinero para destacar la oferta');
             } else if (oferta.nombre == null || oferta.nombre == '' || oferta.detalle == null ||
                 oferta.detalle == '' || oferta.precio == null || oferta.precio <= 0) {
                 res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
+                app.get("logger").error('Los campos no son validos');
             } else if (isNaN(oferta.precio)) {
                 res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numérico");
+                app.get("logger").error('El valor del precio debe ser numérico');
             } else {
                 gestorBD.insertarOferta(oferta, function (id) {
                     if (id == null) {
                         res.redirect("/publicaciones?mensaje=Error al añadir oferta");
+                        app.get("logger").error('Error al añadir oferta');
                     } else {
                         if (oferta.destacada) {
                             gestorBD.usuarioDestaca({"email": req.session.usuario.email}, function (result) {
                                 if (result == null) {
                                     res.redirect("/publicaciones?mensaje=Error destacando la oferta" +
                                         "&tipoMensaje=alert-danger ");
+                                    app.get("logger").error('Error destacando la oferta');
                                 } else {
                                     req.session.usuario.dinero -= 20;
                                     res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
+                                    app.get("logger").info('Nueva oferta añadida');
                                 }
                             });
                         } else {
                             res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
+                            app.get("logger").info('Nueva oferta añadida');
                         }
                     }
                 });
@@ -200,6 +223,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
             if (ofertas === null) {
                 res.send("Error al listar ");
+                app.get("logger").error('Error al listar');
             } else {
                 let ultimaPg = total / 5;
                 if (total % 5 > 0) { // Sobran decimales
@@ -219,6 +243,7 @@ module.exports = function (app, swig, gestorBD) {
                         actual: pg
                     });
                 res.send(respuesta);
+                app.get("logger").info('Se han listado correctamente las páginas');
             }
         });
     });
@@ -233,8 +258,10 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.insertarCompra(compra, function (idCompra) {
             if (idCompra === null) {
                 res.redirect("/tienda?error=Fallo al comprar");
+                app.get("logger").error('Fallo al comprar');
             } else {
                 res.redirect("/compras");
+                app.get("logger").info('Se ha realizado la compra con éxito');
             }
         });
     });
@@ -243,6 +270,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerCompras(criterio, function (compras) {
             if (compras === null) {
                 res.send("Error al listar ");
+                app.get("logger").error('Error al listar las compras');
             } else {
                 let ofertasCompradasIds = [];
                 for (i = 0; i < compras.length; i++) {
@@ -266,6 +294,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas === null) {
                 res.send("Error al listar ");
+                app.get("logger").error('Error al listar las ofertas');
             } else {
                 var respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
