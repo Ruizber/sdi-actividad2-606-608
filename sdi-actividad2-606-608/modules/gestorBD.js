@@ -295,12 +295,12 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('mensajes');
-                collection.find(criterio).toArray(function (err, ofertas) {
+                var collection = db.collection('conversaciones');
+                collection.find(criterio).toArray(function (err, mensajes) {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                        funcionCallback(ofertas);
+                        funcionCallback(mensajes);
                     }
                     db.close();
                 });
@@ -324,5 +324,75 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+    crearConversacion: function (mensaje, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('conversaciones');
+                collection.insertOne(mensaje, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    borrarConversacion: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('mensajes');
+                collection.deleteMany(criterio, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    obtenerConversacion: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('conversaciones');
+                collection.find(criterio).toArray(function (err, messages) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(messages);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    obtenerMensajesConversacion: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('mensajes');
+                collection.find(criterio).toArray(function (err, mensajes) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(mensajes);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
 };
