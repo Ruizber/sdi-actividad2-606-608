@@ -48,16 +48,19 @@ public class MongoDBInsertion {
 					.append("email", "prueba@prueba.com")
 					.append("password", "6fabd6ea6f1518592b7348d84a51ce97b87e67902aa5a9f86beea34cd39a6b4a")
 					.append("rol", "usuario").append("dinero", 100));
-			col = getMongodb().getCollection("ofertas");			
+			col = getMongodb().getCollection("ofertas");
+			col.insertOne(new Document().append("nombre", "PruebaDarDeBaja1").append("detalle", "DarDeBaja1")
+					.append("precio", "5")
+					.append("autor", "ruizbolyt@gmail.com")
+					.append("fecha", "2019-05-03T09:41:32.048+00:00"));
+			col.insertOne(new Document().append("nombre", "PruebaDarDeBajaUltima").append("detalle", "DarDeBajaUltima")
+					.append("precio", "7.5")
+					.append("autor", "ruizbolyt@gmail.com")
+					.append("fecha", "2019-05-02T09:41:32.048+00:00"));
 			col.insertOne(new Document().append("nombre", "Bicicleta").append("detalle", "De carretera")
 						.append("precio", "100")
 						.append("autor", "ruizbolyt@gmail.com")
 						.append("fecha", "2019-05-03T09:41:32.048+00:00"));
-			
-			col.insertOne(new Document().append("nombre", "pruebaruiz").append("detalle", "prueba hecha por ruiz")
-					.append("precio", "8.89")
-					.append("autor", "ruizbolyt@gmail.com")
-					.append("fecha", "2019-05-02T09:41:32.048+00:00"));
 			
 			col.insertOne(new Document().append("nombre", "Prueba").append("detalle", "Esto es una prueba")
 					.append("precio", "2.5")
@@ -73,6 +76,10 @@ public class MongoDBInsertion {
 					.append("precio", "3.5")
 					.append("autor", "prueba2@prueba2.com")
 					.append("fecha", "2019-05-05T09:41:32.048+00:00"));
+			col.insertOne(new Document().append("nombre", "SaldoCero").append("detalle", "SaldoCero")
+					.append("precio", "100")
+					.append("autor", "prueba2@prueba2.com")
+					.append("fecha", "2019-05-05T09:41:32.048+00:00"));
 		} catch (Exception ex) {
 			System.out.print(ex.toString());
 		}
@@ -82,6 +89,7 @@ public class MongoDBInsertion {
 	public void removeDataTest() {
 		getMongodb().getCollection("ofertas").drop();
 		getMongodb().getCollection("usuarios").drop();
+		getMongodb().getCollection("compras").drop();
 	}
 
 	public MongoClient getMongoClient() {

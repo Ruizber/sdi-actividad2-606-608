@@ -99,7 +99,9 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/tienda");
             return;
         }
-        var respuesta = swig.renderFile('views/bagregar.html', {});
+        var respuesta = swig.renderFile('views/bagregar.html', {
+            usuario: req.session.usuario
+        });
         res.send(respuesta);
     });
 
