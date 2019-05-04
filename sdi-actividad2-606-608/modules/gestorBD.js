@@ -295,7 +295,7 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('conversaciones');
+                var collection = db.collection('mensajes');
                 collection.find(criterio).toArray(function (err, mensajes) {
                     if (err) {
                         funcionCallback(null);

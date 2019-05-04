@@ -229,44 +229,18 @@ module.exports = function (app, gestorBD) {
         })
     });
 
-    app.get("/api/conversacion/oferta/:id", function (req, res) {
+    app.get("/api/conversacion/:id", function (req, res) {
         let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
-            if (ofertas == null) {
+        gestorBD.obtenerConversacion(criterioMongo, function (conversaciones) {
+            if (conversaciones == null || conversaciones.length === 0) {
                 res.status(500);
                 res.json({
-                    error: "se ha producido un error"
-                })
-            } else if (ofertas.length === 0) {
-                res.status(400);
-                res.json({
-                    error: "No se encontro la oferta"
+                    error: "se ha producido un error con la conver"
                 })
             } else {
-                let oferta = ofertas[0];
+                let conversacion = conversaciones[0];
                 let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {
-                                    emisor: res.usuario
-                                },
-                                {
-                                    receptor: oferta.autor
-                                }
-                            ]
-                        },
-                        {
-                            $and: [
-                                {
-                                    emisor: oferta.autor
-                                },
-                                {
-                                    receptor: res.usuario
-                                }
-                            ]
-                        }
-                    ]
+                    conversacion: gestorBD.mongo.ObjectID(conversacion._id)
                 };
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {

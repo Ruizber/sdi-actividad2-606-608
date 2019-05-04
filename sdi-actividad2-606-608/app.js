@@ -74,7 +74,7 @@ routerUsuarioToken.use(function (req, res, next) {
 app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/mensaje/oferta/:id', routerUsuarioToken);
 app.use('/api/mensaje/leido/:id', routerUsuarioToken);
-app.use('/api/conversacion/oferta/:id', routerUsuarioToken);
+app.use('/api/conversacion/:id', routerUsuarioToken);
 app.use('/api/mensaje/eliminar/:id', routerUsuarioToken);
 
 // routerUsuarioSession
