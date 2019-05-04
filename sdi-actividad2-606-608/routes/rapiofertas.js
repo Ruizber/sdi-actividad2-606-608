@@ -114,7 +114,7 @@ module.exports = function (app, gestorBD) {
     });
 
     app.post("/api/mensaje/oferta/:id", function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
@@ -122,19 +122,21 @@ module.exports = function (app, gestorBD) {
                     error: "Se ha producido un error"
                 })
             } else {
+                let oferta2 = ofertas[0];
                 let criterio = {
-                    oferta: gestorBD.mongo.ObjectID(req.params.id),
                     $or: [
                         {
                             $and: [
-                                {comprador: usuario},
-                                {autor: ofertas[0].autor}
+                                {usuario: res.usuario},
+                                {autor: oferta2.autor},
+                                {oferta: gestorBD.mongo.ObjectID(req.params.id)}
                             ]
                         },
                         {
                             $and: [
-                                {comprador: ofertas[0].autor},
-                                {autor: usuario}
+                                {usuario: oferta2.autor},
+                                {autor: res.usuario},
+                                {oferta: gestorBD.mongo.ObjectID(req.params.id)}
                             ]
                         }
                     ]
@@ -146,17 +148,16 @@ module.exports = function (app, gestorBD) {
                             error: "se ha producido un error al buscar la conversación"
                         })
                     } else {
-                        let oferta = ofertas[0];
                         if (conversaciones.length > 0) {
                             let conversacion = conversaciones[0];
                             let mensaje = {
                                 emisor: res.usuario,
                                 receptor: req.body.receptor,
-                                oferta: oferta,
+                                oferta: oferta2,
                                 fecha: new Date(),
                                 leido: false,
                                 mensaje: req.body.mensaje,
-                                conversacion: conversacion._id.toString()
+                                conversacion: conversacion._id
                             };
                             gestorBD.insertarMensaje(mensaje, function (mensajes) {
                                 if (mensajes == null) {
@@ -171,12 +172,12 @@ module.exports = function (app, gestorBD) {
                             });
                         } else {
                             let conversacion = {
-                                oferta: oferta_id.toString(),
-                                autor: oferta.autor,
+                                oferta: oferta2._id,
+                                autor: oferta2.autor,
                                 usuario: res.usuario,
                                 numMessage: 0
-                            }
-                            gestorBD.crearConversacion(conversacion, function (conversiones) {
+                            };
+                            gestorBD.crearConversacion(conversacion, function (conversacion) {
                                 if (conversaciones == null) {
                                     res.status(500);
                                     res.json({
@@ -184,57 +185,31 @@ module.exports = function (app, gestorBD) {
                                     });
                                 } else {
                                     let oferta = ofertas[0];
-                                    if (conversaciones.length > 0) {
-                                        let conversacion = conversaciones[0];
-                                        let mensaje = {
-                                            emisor: res.usuario,
-                                            receptor: req.body.receptor,
-                                            oferta: oferta,
-                                            fecha: new Date(),
-                                            leido: false,
-                                            mensaje: req.body.mensaje,
-                                            conversacion: conversacion._id.toString()
-                                        };
-                                        gestorBD.insertarMensaje(mensaje, function (mensajes) {
-                                            if (mensajes == null) {
-                                                res.status(500);
-                                                res.json({
-                                                    error: "se ha producido un error"
-                                                })
-                                            } else {
-                                                res.status(200);
-                                                res.send(JSON.stringify(mensajes));
-                                            }
-                                        });
-                                    }
+                                    let mensaje = {
+                                        emisor: res.usuario,
+                                        receptor: req.body.receptor,
+                                        oferta: oferta,
+                                        fecha: new Date(),
+                                        leido: false,
+                                        mensaje: req.body.mensaje,
+                                        conversacion: conversacion._id
+                                    };
+                                    gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                                        if (mensajes == null) {
+                                            res.status(500);
+                                            res.json({
+                                                error: "se ha producido un error"
+                                            })
+                                        } else {
+                                            res.status(200);
+                                            res.send(JSON.stringify(mensajes));
+                                        }
+                                    });
                                 }
                             })
                         }
                     }
                 });
-
-
-                let oferta = ofertas[0];
-                let mensaje = {
-                    emisor: res.usuario,
-                    receptor: req.body.receptor,
-                    oferta: oferta,
-                    fecha: new Date(),
-                    leido: false,
-                    mensaje: req.body.mensaje
-                };
-                gestorBD.insertarMensaje(mensaje, function (mensajes) {
-                    if (mensajes == null) {
-                        res.status(500);
-                        res.json({
-                            error: "se ha producido un error"
-                        })
-                    } else {
-                        res.status(200);
-                        console.log(mensajes)
-                        res.send(JSON.stringify(mensajes));
-                    }
-                })
             }
         })
     });

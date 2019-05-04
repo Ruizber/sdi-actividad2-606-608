@@ -1,2 +1,97 @@
 [2019-05-04T15:00:35.143] [INFO] sdi - Usuario se intenta loguear
 [2019-05-04T15:00:40.826] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:20.442] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:21.819] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:23.358] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:24.524] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:26.328] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:27.304] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:28.340] [INFO] sdi - Usuario registrado como usuarioeliminar1@email.com
+[2019-05-04T15:04:28.978] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:04:28.986] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:29.093] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:30.783] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:30.798] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:32.386] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:33.202] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:34.156] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:35.363] [INFO] sdi - Usuario registrado como usuarioeliminar1@email.com
+[2019-05-04T15:04:36.042] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:04:36.047] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:36.128] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:36.988] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:38.106] [INFO] sdi - Usuario registrado como usuarioeliminar2@email.com
+[2019-05-04T15:04:38.772] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:04:38.776] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:38.858] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:39.787] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:40.763] [INFO] sdi - Usuario registrado como usuarioeliminar3@email.com
+[2019-05-04T15:04:41.861] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:04:41.866] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:41.946] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:42.877] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:42.892] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:44.814] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:45.585] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:46.409] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:04:47.359] [INFO] sdi - Usuario registrado como usuarioeliminar2@email.com
+[2019-05-04T15:04:48.017] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:04:48.023] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:48.114] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:49.011] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:49.026] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:51.594] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:04:52.353] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:53.593] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:04:55.989] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:04:57.301] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:01.394] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:02.587] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:05.214] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:06.363] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:11.945] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:05:11.949] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:13.409] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:14.207] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:15.402] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:20.420] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:05:20.425] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:21.851] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:22.600] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:23.899] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:28.230] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:29.408] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:30.051] [INFO] sdi - El usuario [object Object] ha cerrado sesión correctamente
+[2019-05-04T15:05:30.056] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:30.295] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:31.539] [ERROR] sdi - Email o password incorrecto
+[2019-05-04T15:05:31.547] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:31.788] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:32.607] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:33.810] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:35.990] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:37.570] [ERROR] sdi - Email o password incorrecto
+[2019-05-04T15:05:37.592] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:38.675] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:40.304] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:42.101] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:43.201] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:43.222] [INFO] sdi - El usuario [object Object] lista los usuarios de la aplicación
+[2019-05-04T15:05:44.399] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:46.203] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:46.204] [ERROR] sdi - Las contraseñas deben ser iguales
+[2019-05-04T15:05:46.219] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:46.761] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:47.969] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:49.129] [INFO] sdi - Usuario registrado como prueba6@prueba6.com
+[2019-05-04T15:05:50.176] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:51.633] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:52.103] [ERROR] sdi - El email ya está registrado
+[2019-05-04T15:05:52.117] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:52.560] [INFO] sdi - Usuario se va a registrar
+[2019-05-04T15:05:53.853] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:55.007] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:05:57.964] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:05:59.130] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
+[2019-05-04T15:06:01.928] [INFO] sdi - Usuario se intenta loguear
+[2019-05-04T15:06:03.024] [INFO] sdi - El usuario [object Object] se ha logueado correctamente
