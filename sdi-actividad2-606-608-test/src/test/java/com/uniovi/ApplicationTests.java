@@ -391,29 +391,30 @@ public class ApplicationTests {
 		SeleniumUtils.textoNoPresentePagina(driver, "usuarioeliminar3");
 	}
 
-	/*
-	 * @Test public void testAltaOfertaDatosValidos() throws Exception {
-	 * driver.get(URL); driver.findElement(By.linkText("Identifícate")).click();
-	 * driver.findElement(By.name("email")).click();
-	 * driver.findElement(By.name("email")).clear();
-	 * driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
-	 * driver.findElement(By.name("password")).click();
-	 * driver.findElement(By.name("password")).clear();
-	 * driver.findElement(By.name("password")).sendKeys("123456");
-	 * driver.findElement(By.id("identificarseButton")).click();
-	 * driver.findElement(By.id("AgregarOferta")).click();
-	 * driver.findElement(By.name("nombre")).click();
-	 * driver.findElement(By.name("nombre")).clear();
-	 * driver.findElement(By.name("nombre")).sendKeys("AñadirOferta");
-	 * driver.findElement(By.name("detalle")).click();
-	 * driver.findElement(By.name("detalle")).clear();
-	 * driver.findElement(By.name("detalle")).sendKeys("NuevaOferta");
-	 * driver.findElement(By.name("precio")).click();
-	 * driver.findElement(By.name("precio")).clear();
-	 * driver.findElement(By.name("precio")).sendKeys("10");
-	 * driver.findElement(By.id("agregar")).click();
-	 * SeleniumUtils.textoPresentePagina(driver, "AñadirOferta"); }
-	 */
+	@Test
+	public void testWAltaOfertaDatosValidos() throws Exception {
+		driver.get(URL);
+		driver.findElement(By.linkText("Identifícate")).click();
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("123456");
+		driver.findElement(By.id("identificarseButton")).click();
+		driver.findElement(By.id("AgregarOferta")).click();
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("AñadirOferta");
+		driver.findElement(By.name("detalle")).click();
+		driver.findElement(By.name("detalle")).clear();
+		driver.findElement(By.name("detalle")).sendKeys("NuevaOferta");
+		driver.findElement(By.name("precio")).click();
+		driver.findElement(By.name("precio")).clear();
+		driver.findElement(By.name("precio")).sendKeys("10");
+		driver.findElement(By.id("agregar")).click();
+		SeleniumUtils.textoPresentePagina(driver, "AñadirOferta");
+	}
 
 	@Test
 	public void testAltaOfertaDatosInvalidos() throws Exception {
@@ -615,9 +616,8 @@ public class ApplicationTests {
 		driver.findElement(By.id("buscador")).click();
 		driver.findElement(By.id("buscador")).clear();
 		driver.findElement(By.id("buscador")).sendKeys("SaldoCero");
-		driver.findElement(By.xpath(
-				"(.//*[normalize-space(text()) and normalize-space(.)='Publicado por:'])[4]/following::a[1]"))
-				.click();
+		driver.findElement(By.id("botonBuscar")).click();
+		driver.findElement(By.linkText("Comprar")).click();
 		driver.findElement(By.xpath(
 				"(.//*[normalize-space(text()) and normalize-space(.)='SaldoCero'])[2]/following::a[1]"))
 				.click();
