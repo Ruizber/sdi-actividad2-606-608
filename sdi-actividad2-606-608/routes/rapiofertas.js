@@ -19,8 +19,7 @@ module.exports = function (app, gestorBD) {
     });
 
     app.delete("/api/oferta/:id", function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
-
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.eliminarOferta(criterio, function (oferta) {
             if (oferta == null) {
                 res.status(500);
@@ -215,7 +214,7 @@ module.exports = function (app, gestorBD) {
     });
 
     app.get("/api/mensaje/leido/:id", function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.pasarMensajeLeido(criterio, function (mensajes) {
             if (mensajes == null) {
                 res.status(500);
@@ -284,59 +283,4 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
-
-    app.get("/api/mensaje/eliminar/:id", function (req, res) {
-        let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
-            if (ofertas == null) {
-                res.status(500);
-                res.json({
-                    error: "se ha producido un error"
-                })
-            } else if (ofertas.length === 0) {
-                res.status(400);
-                res.json({
-                    error: "Oferta no encontrada"
-                })
-            } else {
-                let oferta = ofertas[0];
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {
-                                    emisor: res.usuario
-                                },
-                                {
-                                    receptor: oferta.autor
-                                }
-                            ]
-                        },
-                        {
-                            $and: [
-                                {
-                                    emisor: oferta.autor
-                                },
-                                {
-                                    receptor: res.usuario
-                                }
-                            ]
-                        }
-                    ]
-                };
-                gestorBD.eliminarMensajes(criterio, function (mensajes) {
-                    if (mensajes == null) {
-                        res.status(500);
-                        res.json({
-                            error: "se ha producido un error"
-                        })
-                    } else {
-                        res.status(200);
-                        res.send(JSON.stringify(mensajes));
-                    }
-                });
-            }
-        });
-    });
-
-}
+};
