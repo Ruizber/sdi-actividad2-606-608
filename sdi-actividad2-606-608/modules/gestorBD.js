@@ -53,10 +53,6 @@ module.exports = {
         });
     },
 
-
-
-
-
     actualizarDinero: function (criterio, nuevoCriterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
@@ -175,6 +171,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                     } else {
+                        collection.find(criterio).sort({"destacada": -1});
                         funcionCallback(ofertas);
                     }
                     db.close();

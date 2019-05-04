@@ -223,7 +223,6 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-
     app.get('/oferta/comprar/:id', function (req, res) {
         let ofertaId = gestorBD.mongo.ObjectID(req.params.id);
         let compra = {

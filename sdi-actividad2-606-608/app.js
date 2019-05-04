@@ -30,6 +30,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app, mongo);
 
+// logger
+let log4js = require('log4js');
+log4js.configure({
+    appenders: {sdi: {type: 'file', filename: 'logs/sdi.log'}},
+    categories: {default: {appenders: ['sdi'], level: 'trace'}}
+});
+let logger = log4js.getLogger('sdi');
+
+
 // routerUsuarioToken
 var routerUsuarioToken = express.Router();
 routerUsuarioToken.use(function (req, res, next) {
@@ -111,6 +120,7 @@ app.set('port', 8081);
 app.set('db', 'mongodb://uo257947:uo257947@sdi-actividad2-606-608-shard-00-00-na9yb.mongodb.net:27017,sdi-actividad2-606-608-shard-00-01-na9yb.mongodb.net:27017,sdi-actividad2-606-608-shard-00-02-na9yb.mongodb.net:27017/test?ssl=true&replicaSet=sdi-actividad2-606-608-shard-0&authSource=admin&retryWrites=true');
 app.set('clave', 'abcdefg');
 app.set('crypto', crypto);
+app.set('logger', logger);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
