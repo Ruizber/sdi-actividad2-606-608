@@ -19,7 +19,7 @@ module.exports = function (app, gestorBD) {
     });
 
     app.delete("/api/oferta/:id", function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
 
         gestorBD.eliminarOferta(criterio, function (oferta) {
             if (oferta == null) {
@@ -35,11 +35,11 @@ module.exports = function (app, gestorBD) {
     });
 
     app.post("/api/oferta", function (req, res) {
-        var oferta = {
+        let oferta = {
             nombre: req.body.nombre,
             fecha: req.body.fecha,
             precio: req.body.precio,
-        }
+        };
         gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
                 res.status(500);
@@ -58,9 +58,9 @@ module.exports = function (app, gestorBD) {
 
     app.put("/api/oferta/:id", function (req, res) {
 
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
 
-        var oferta = {}; // Solo los atributos a modificar
+        let oferta = {}; // Solo los atributos a modificar
         if (req.body.nombre != null)
             oferta.nombre = req.body.nombre;
         if (req.body.fecha != null)
@@ -122,6 +122,98 @@ module.exports = function (app, gestorBD) {
                     error: "Se ha producido un error"
                 })
             } else {
+                let criterio = {
+                    oferta: gestorBD.mongo.ObjectID(req.params.id),
+                    $or: [
+                        {
+                            $and: [
+                                {comprador: usuario},
+                                {autor: ofertas[0].autor}
+                            ]
+                        },
+                        {
+                            $and: [
+                                {comprador: ofertas[0].autor},
+                                {autor: usuario}
+                            ]
+                        }
+                    ]
+                };
+                gestorBD.obtenerConversacion(criterio, function (conversaciones) {
+                    if (conversaciones == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error al buscar la conversación"
+                        })
+                    } else {
+                        let oferta = ofertas[0];
+                        if (conversaciones.length > 0) {
+                            let conversacion = conversaciones[0];
+                            let mensaje = {
+                                emisor: res.usuario,
+                                receptor: req.body.receptor,
+                                oferta: oferta,
+                                fecha: new Date(),
+                                leido: false,
+                                mensaje: req.body.mensaje,
+                                conversacion: conversacion._id.toString()
+                            };
+                            gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                                if (mensajes == null) {
+                                    res.status(500);
+                                    res.json({
+                                        error: "se ha producido un error"
+                                    })
+                                } else {
+                                    res.status(200);
+                                    res.send(JSON.stringify(mensajes));
+                                }
+                            });
+                        } else {
+                            let conversacion = {
+                                oferta: oferta_id.toString(),
+                                autor: oferta.autor,
+                                usuario: res.usuario,
+                                numMessage: 0
+                            }
+                            gestorBD.crearConversacion(conversacion, function (conversiones) {
+                                if (conversaciones == null) {
+                                    res.status(500);
+                                    res.json({
+                                        error: "se ha producido un error al buscar la conversación"
+                                    });
+                                } else {
+                                    let oferta = ofertas[0];
+                                    if (conversaciones.length > 0) {
+                                        let conversacion = conversaciones[0];
+                                        let mensaje = {
+                                            emisor: res.usuario,
+                                            receptor: req.body.receptor,
+                                            oferta: oferta,
+                                            fecha: new Date(),
+                                            leido: false,
+                                            mensaje: req.body.mensaje,
+                                            conversacion: conversacion._id.toString()
+                                        };
+                                        gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                                            if (mensajes == null) {
+                                                res.status(500);
+                                                res.json({
+                                                    error: "se ha producido un error"
+                                                })
+                                            } else {
+                                                res.status(200);
+                                                res.send(JSON.stringify(mensajes));
+                                            }
+                                        });
+                                    }
+                                }
+                            })
+                        }
+                    }
+                });
+
+
                 let oferta = ofertas[0];
                 let mensaje = {
                     emisor: res.usuario,
@@ -177,8 +269,10 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let criterio = {$or: [
-                        {$and: [
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
                                 {
                                     emisor: res.usuario
                                 },
@@ -197,7 +291,8 @@ module.exports = function (app, gestorBD) {
                                 }
                             ]
                         }
-                    ]};
+                    ]
+                };
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -228,8 +323,10 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let criterio = {$or: [
-                        {$and: [
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
                                 {
                                     emisor: res.usuario
                                 },
@@ -248,7 +345,8 @@ module.exports = function (app, gestorBD) {
                                 }
                             ]
                         }
-                    ]};
+                    ]
+                };
                 gestorBD.eliminarMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
