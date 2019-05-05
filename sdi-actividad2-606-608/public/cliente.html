@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/script/cookie.js"></script>
+    <script src="script/cookie.js"></script>
 </head>
 <body>
 
@@ -40,23 +40,23 @@
 
 <script>
     var token;
-    var URLbase = "https://localhost:8081/api";
-    $( "#contenedor-principal" ).load( "widget-login.html");
+    var URLbase = "http://localhost:8081/api";
+    $("#contenedor-principal").load("widget-login.html");
 
-    if ( Cookies.get('token') != null ){
+    if (Cookies.get('token') != null) {
         token = Cookies.get('token');
         var url = new URL(window.location.href);
         var w = url.searchParams.get("w");
-        if ( w == "login"){
-            $( "#contenedor-principal" ).load("widget-login.html");
+        if (w === "login") {
+            $("#contenedor-principal").load("widget-login.html");
         }
-        if ( w == "ofertas"){
-            $( "#contenedor-principal" ).load("widget-ofertas.html");
+        if (w === "ofertas") {
+            $("#contenedor-principal").load("widget-ofertas.html");
         }
     }
 
-    function widgetOfertas(){
-        $( "#contenedor-principal" ).load( "widget-ofertas.html");
+    function widgetOfertas() {
+        $("#contenedor-principal").load("widget-ofertas.html");
     }
 </script>
 </body>

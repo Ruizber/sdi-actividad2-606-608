@@ -1,8 +1,8 @@
-<div id="widget-ofertas" >
+<div id="widget-ofertas">
     <input type="text" class="form-control" placeholder="Filtrar por nombre"
            id="filtro-nombre"/>
     <button class="btn btn-primary" onclick="widgetAgregar()">Nueva Oferta</button>
-    <button class="btn" onclick="cargarOfertas()" >Actualizar</button>
+    <button class="btn" onclick="cargarOfertas()">Actualizar</button>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -20,41 +20,39 @@
 <script>
     window.history.pushState("", "", "/cliente.html?w=ofertas");
     let ofertas;
-    function cargarOfertas(){
+
+    function cargarOfertas() {
         $.ajax({
-            url: URLbase + "/ofertas",
+            url: URLbase + "/oferta",
             type: "GET",
-            data: { },
+            data: {},
             dataType: 'json',
-            headers: { "token": token },
-            success: function(respuesta) {
+            headers: {"token": token},
+            success: function (respuesta) {
                 ofertas = respuesta;
                 actualizarTabla(ofertas);
             },
-            error : function (error){
+            error: function () {
+                alert('Error al cargar las ofertas');
                 $( "#contenedor-principal" ).load("widget-login.html");
             }
         });
     }
-    function actualizarTabla(ofertasMostrar){
-        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
-        for (i = 0; i < ofertasMostrar.length; i++) {
-            $( "#tablaCuerpo" ).append(
-                "<tr id="+ofertasMostrar[i]._id+">"+
-                "<td>"+ofertasMostrar[i].nombre+"</td>" +
-                "<td>"+ofertasMostrar[i].detalle+"</td>" +
-                "<td>"+ofertasMostrar[i].precio+"</td>" +
-                "<td>"+
-                "<a onclick=enviarMensaje('"+ofertasMostrar[i]._id+"')>Enviar mensaje</a><br>"+
-                "</td>"+
-                "</tr>" );
+
+    function actualizarTabla(ofertasMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (let i = 0; i < ofertasMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + ofertasMostrar[i]._id + ">" +
+                "<td>" + ofertasMostrar[i].nombre + "</td>" +
+                "<td>" + ofertasMostrar[i].detalle + "</td>" +
+                "<td>" + ofertasMostrar[i].precio + "</td>" +
+                "<td>" +
+                "<a onclick=enviarMensaje('" + ofertasMostrar[i]._id + "')>Enviar mensaje</a><br>" +
+                "</td>" +
+                "</tr>");
 
         }
     }
     cargarOfertas();
-
-
-
-
 </script>
-}
