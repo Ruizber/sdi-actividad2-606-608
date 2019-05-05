@@ -28,13 +28,7 @@
 
     $("#boton-login").click(function () {
         let email = $("#email").val();
-        if (email === undefined || email === '') {
-            alert('Introduzca un email')
-        }
         let password = $("#password").val();
-        if (password === undefined || password === '') {
-            alert('Introduzca una password')
-        }
         $.ajax({
             url: URLbase + "/autenticar",
             type: "POST",
@@ -50,7 +44,7 @@
             },
             error: function () {
                 Cookies.remove('token');
-                alert('Usuario no encontrado')
+                $("#widget-login").prepend("<div class='alert alert-danger'>Usuario no encontrado</div>");
             }
         });
     });

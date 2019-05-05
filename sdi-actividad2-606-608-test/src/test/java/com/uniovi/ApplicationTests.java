@@ -24,6 +24,7 @@ public class ApplicationTests {
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox64, Geckdriver022);
 	static String URL = "http://localhost:8081";
+	static String URLApi = "http://localhost:8081/cliente.html";
 	// static String URLRemota = "http://52.39.96.241:8090";
 
 	public static WebDriver getDriver(String PathFirefox, String Geckdriver) {
@@ -760,6 +761,106 @@ public class ApplicationTests {
 				.click();
 		SeleniumUtils.textoPresentePagina(driver,
 				"No tienes suficiente dinero, necesitas 20€");
+	}
+
+	@Test
+	public void testZinicioSesionApiDatosValidos() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Titulo");
+		SeleniumUtils.textoPresentePagina(driver, "Descripción");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+	}
+
+	@Test
+	public void testZinicioSesionApiDatosInvalidos() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("1234");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
+	}
+
+	@Test
+	public void testZinicioSesionApiCamposVaciosPassword() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
+	}
+
+	@Test
+	public void testZinicioSesionApiCamposVaciosEmail() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
+	}
+
+	@Test
+	public void testZListadoDeOfertasDisponibles() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Titulo");
+		SeleniumUtils.textoPresentePagina(driver, "Descripción");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Prueba");
+		SeleniumUtils.textoPresentePagina(driver, "Pablo");
+		SeleniumUtils.textoPresentePagina(driver, "SaldoCero");
+		SeleniumUtils.textoPresentePagina(driver, "Prueba2");
+		SeleniumUtils.textoPresentePagina(driver, "Destacada1");
+		SeleniumUtils.textoPresentePagina(driver, "DestacarLuego");
+	}
+
+	@Test
+	public void ztestMensajeAparece() throws Exception {
+		driver.get(URLApi);
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("ruizbolyt@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("123456");
+		driver.findElement(By.id("boton-login")).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		driver.findElement(By.linkText("Enviar mensaje")).click();
+		driver.findElement(By.id("agregar-mensaje")).click();
+		driver.findElement(By.id("agregar-mensaje")).clear();
+		driver.findElement(By.id("agregar-mensaje")).sendKeys("Prueba Mensaje");
+		driver.findElement(By.id("boton-enviar")).click();
+		driver.findElement(By.id("navOfertas")).click();
+		SeleniumUtils.esperarSegundos(driver, 4);
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='Ofertas'])[1]/following::button[1]"))
+				.click();
+		driver.findElement(By.linkText("Enviar mensaje")).click();
+		SeleniumUtils.esperarSegundos(driver, 4);
+		SeleniumUtils.textoPresentePagina(driver, "Prueba Mensaje");
 	}
 
 }
