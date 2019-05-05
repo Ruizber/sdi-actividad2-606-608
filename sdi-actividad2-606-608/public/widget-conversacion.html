@@ -1,5 +1,4 @@
 <div id="widget-conversacion">
-    <button class="btn" onclick="cargarMensajes()">Actualizar</button>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -24,8 +23,6 @@
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=conversacion");
-    let conversacion;
-    let mensajes;
 
     function cargarConversacion() {
         $.ajax({
@@ -35,8 +32,8 @@
             dataType: 'json',
             headers: {"token": token},
             success: function (respuesta) {
-                conversacion = respuesta;
-                cargarMensajes();
+                let conversacion = respuesta;
+                cargarMensajes(conversacion);
             },
             error: function () {
                 alert('Error al cargar la conversación');
@@ -45,7 +42,7 @@
         });
     }
 
-    function cargarMensajes() {
+    function cargarMensajes(conversacion) {
         if (conversacion.length !== 0) {
             $.ajax({
                 url: URLbase + "/conversacion/" + conversacion[0]._id,
@@ -54,8 +51,8 @@
                 dataType: 'json',
                 headers: {"token": token},
                 success: function (respuesta) {
-                    mensajes = respuesta
-                    actualizarTabla()
+                    let mensajes = respuesta
+                    actualizarTabla(mensajes)
                 },
                 error: function (error) {
                     alert('Error al cargar los mensajes de la conversación');
@@ -66,7 +63,7 @@
     }
 
 
-    function actualizarTabla() {
+    function actualizarTabla(mensajes) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (let i = 0; i < mensajes.length; i++) {
             $("#tablaCuerpo").append(
@@ -97,4 +94,11 @@
     }
 
     cargarConversacion();
+    refreshIntervalId = setInterval(cargarConversacion, 1000);
+
+
+    $("#navOfertas").click(function () {
+        clearInterval(refreshIntervalId);
+    });
+
 </script>

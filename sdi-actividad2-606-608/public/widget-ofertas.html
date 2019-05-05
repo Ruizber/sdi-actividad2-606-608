@@ -16,11 +16,9 @@
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=ofertas");
-    let ofertas;
-
+    $("#navOfertas").show();
+    $("#desconectarse").show();
     function cargarOfertas() {
-        Cookies.remove('ofertaId');
-        Cookies.remove('autor');
         $.ajax({
             url: URLbase + "/oferta",
             type: "GET",
@@ -28,12 +26,11 @@
             dataType: 'json',
             headers: {"token": token},
             success: function (respuesta) {
-                ofertas = respuesta;
+                let ofertas = respuesta;
                 actualizarTabla(ofertas);
             },
             error: function () {
                 alert('Error al cargar las ofertas');
-                Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");
             }
         });
