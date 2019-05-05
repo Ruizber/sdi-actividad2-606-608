@@ -216,9 +216,11 @@ module.exports = function (app, swig, gestorBD) {
                 }
             };
         }
-        let pg = parseInt(req.query.pg); // Es String !!!
-        if (req.query.pg === null) { // Puede no venir el param
+        let pg;
+        if (req.query.pg === undefined) { // Puede no venir el param
             pg = 1;
+        } else {
+            pg = parseInt(req.query.pg);// Es String !!!
         }
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
             if (ofertas === null) {
@@ -227,7 +229,7 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 let ultimaPg = total / 5;
                 if (total % 5 > 0) { // Sobran decimales
-                    ultimaPg = ultimaPg + 1;
+                    ultimaPg = parseInt(ultimaPg + 1);
                 }
                 let paginas = []; // paginas mostrar
                 for (let i = pg - 2; i <= pg + 2; i++) {
@@ -240,7 +242,8 @@ module.exports = function (app, swig, gestorBD) {
                         usuario: req.session.usuario,
                         ofertas: ofertas,
                         paginas: paginas,
-                        actual: pg
+                        actual: pg,
+                        ultimaPg: ultimaPg
                     });
                 res.send(respuesta);
                 app.get("logger").info('Se han listado correctamente las páginas');
