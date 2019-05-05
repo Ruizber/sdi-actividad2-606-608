@@ -7,11 +7,13 @@ module.exports = function (app, gestorBD) {
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
+                app.get("logger").error("Se ha producido un error al obtener las ofertas (API)");
                 res.status(500);
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
+                app.get("logger").info("Las ofertas se listaron correctamente (API)");
                 res.status(200);
                 res.send(JSON.stringify(ofertas));
             }
@@ -22,11 +24,13 @@ module.exports = function (app, gestorBD) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.eliminarOferta(criterio, function (oferta) {
             if (oferta == null) {
+                app.get("logger").error("Se ha producido un error al eliminar la oferta (API)");
                 res.status(500);
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
+                app.get("logger").info("La oferta se eliminó correctamente (API)");
                 res.status(200);
                 res.send(JSON.stringify(ofertas));
             }
@@ -41,42 +45,17 @@ module.exports = function (app, gestorBD) {
         };
         gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
+                app.get("logger").error("Se ha producido un error al insertar la oferta (API)");
                 res.status(500);
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
+                app.get("logger").info("La oferta se insertó correctamente (API)");
                 res.status(201);
                 res.json({
                     mensaje: "oferta insertarda",
                     _id: id
-                })
-            }
-        });
-    });
-
-    app.put("/api/oferta/:id", function (req, res) {
-
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-
-        let oferta = {}; // Solo los atributos a modificar
-        if (req.body.nombre != null)
-            oferta.nombre = req.body.nombre;
-        if (req.body.fecha != null)
-            oferta.fecha = req.body.fecha;
-        if (req.body.precio != null)
-            oferta.precio = req.body.precio;
-        gestorBD.modificarOferta(criterio, oferta, function (result) {
-            if (result == null) {
-                res.status(500);
-                res.json({
-                    error: "se ha producido un error"
-                })
-            } else {
-                res.status(200);
-                res.json({
-                    mensaje: "oferta modificada",
-                    _id: req.params.id
                 })
             }
         });
@@ -91,6 +70,7 @@ module.exports = function (app, gestorBD) {
         };
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length === 0) {
+                app.get("logger").error("Se ha producido un error al obtener el usuario (API)");
                 res.status(401); // Unauthorized
                 res.json({
                     autenticado: false
@@ -102,6 +82,7 @@ module.exports = function (app, gestorBD) {
                         tiempo: Date.now() / 1000
                     },
                     "secreto");
+                app.get("logger").info("El usuario se ha autenticado correctamente (API)");
                 res.status(200);
                 res.json({
                     autenticado: true,
@@ -116,6 +97,7 @@ module.exports = function (app, gestorBD) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
+                app.get("logger").error("Se ha producido un error al obtener las ofertas (API)");
                 res.status(500);
                 res.json({
                     error: "Se ha producido un error"
@@ -142,6 +124,7 @@ module.exports = function (app, gestorBD) {
                 };
                 gestorBD.obtenerConversacion(criterio, function (conversaciones) {
                     if (conversaciones == null) {
+                        app.get("logger").error("Se ha producido un error al buscar la conversación (API)");
                         res.status(500);
                         res.json({
                             error: "se ha producido un error al buscar la conversación"
@@ -160,11 +143,13 @@ module.exports = function (app, gestorBD) {
                             };
                             gestorBD.insertarMensaje(mensaje, function (mensajes) {
                                 if (mensajes == null) {
+                                    app.get("logger").error("Se ha producido un error al insertar el mensaje (API)");
                                     res.status(500);
                                     res.json({
                                         error: "se ha producido un error"
                                     })
                                 } else {
+                                    app.get("logger").info("Se ha insertado correctamente el mensaje (API)");
                                     res.status(200);
                                     res.send(JSON.stringify(mensajes));
                                 }
@@ -178,6 +163,7 @@ module.exports = function (app, gestorBD) {
                             };
                             gestorBD.crearConversacion(conversacion, function (conversacion) {
                                 if (conversaciones == null) {
+                                    app.get("logger").error("Se ha producido un error al buscar la conversación (API)");
                                     res.status(500);
                                     res.json({
                                         error: "se ha producido un error al buscar la conversación"
@@ -195,11 +181,13 @@ module.exports = function (app, gestorBD) {
                                     };
                                     gestorBD.insertarMensaje(mensaje, function (mensajes) {
                                         if (mensajes == null) {
+                                            app.get("logger").error("Se ha producido un error al insertar el mensaje (API)");
                                             res.status(500);
                                             res.json({
                                                 error: "se ha producido un error"
                                             })
                                         } else {
+                                            app.get("logger").info("Se ha insertado correctamente el mensaje (API)");
                                             res.status(200);
                                             res.send(JSON.stringify(mensajes));
                                         }
@@ -217,11 +205,13 @@ module.exports = function (app, gestorBD) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.pasarMensajeLeido(criterio, function (mensajes) {
             if (mensajes == null) {
+                app.get("logger").error("Se ha producido un error al pasar a leido el mensaje (API)");
                 res.status(500);
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
+                app.get("logger").info("Se ha marcado como leido correctamente el mensaje (API)");
                 res.status(200);
                 res.send(JSON.stringify(mensajes));
             }
@@ -232,9 +222,10 @@ module.exports = function (app, gestorBD) {
         let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerConversacion(criterioMongo, function (conversaciones) {
             if (conversaciones == null || conversaciones.length === 0) {
+                app.get("logger").error("Se ha producido un error al obtener la conversacion (API)");
                 res.status(500);
                 res.json({
-                    error: "se ha producido un error con la conver"
+                    error: "se ha producido un error con la conversacion"
                 })
             } else {
                 let conversacion = conversaciones[0];
@@ -243,11 +234,13 @@ module.exports = function (app, gestorBD) {
                 };
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
+                        app.get("logger").error("Se ha producido un error al obtener los mensajes (API)");
                         res.status(500);
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
+                        app.get("logger").info("Se han obtenido correctamente los mensajes (API)");
                         res.status(200);
                         res.send(JSON.stringify(mensajes));
                     }
@@ -260,9 +253,10 @@ module.exports = function (app, gestorBD) {
         let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerConversacion(criterioMongo, function (conversaciones) {
             if (conversaciones == null || conversaciones.length === 0) {
+                app.get("logger").error("Se ha producido un error al obtener la conversacion (API)");
                 res.status(500);
                 res.json({
-                    error: "se ha producido un error con la conver"
+                    error: "se ha producido un error con la conversacion"
                 })
             } else {
                 let conversacion = conversaciones[0];
@@ -271,11 +265,13 @@ module.exports = function (app, gestorBD) {
                 };
                 gestorBD.eliminarMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
+                        app.get("logger").error("Se ha producido un error al eliminar los mensajes (API)");
                         res.status(500);
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
+                        app.get("logger").info("Se han eliminado correctamente los mensajes (API)");
                         res.status(200);
                         res.send(JSON.stringify(mensajes));
                     }
@@ -288,6 +284,7 @@ module.exports = function (app, gestorBD) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.ofertaId)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
+                app.get("logger").error("Se ha producido un error al obtener las ofertas (API)");
                 res.status(500);
                 res.json({
                     error: "Se ha producido un error"
@@ -314,11 +311,13 @@ module.exports = function (app, gestorBD) {
                 };
                 gestorBD.obtenerConversacion(criterio, function (conversaciones) {
                     if (conversaciones == null) {
+                        app.get("logger").error("Se ha producido un error al buscar la conversacion (API)");
                         res.status(500);
                         res.json({
                             error: "se ha producido un error al buscar la conversación"
                         })
                     } else {
+                        app.get("logger").info("Se han obtenido correctamente las conversaciones (API)");
                         res.status(200);
                         res.send(JSON.stringify(conversaciones));
                     }
