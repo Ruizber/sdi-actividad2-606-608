@@ -1,7 +1,4 @@
 <div id="widget-ofertas">
-    <input type="text" class="form-control" placeholder="Filtrar por nombre"
-           id="filtro-nombre"/>
-    <button class="btn btn-primary" onclick="widgetAgregar()">Nueva Oferta</button>
     <button class="btn" onclick="cargarOfertas()">Actualizar</button>
     <table class="table table-hover">
         <thead>
@@ -22,6 +19,8 @@
     let ofertas;
 
     function cargarOfertas() {
+        Cookies.remove('ofertaId');
+        Cookies.remove('autor');
         $.ajax({
             url: URLbase + "/oferta",
             type: "GET",
@@ -34,7 +33,8 @@
             },
             error: function () {
                 alert('Error al cargar las ofertas');
-                $( "#contenedor-principal" ).load("widget-login.html");
+                Cookies.remove('token');
+                $("#contenedor-principal").load("widget-login.html");
             }
         });
     }
@@ -48,11 +48,18 @@
                 "<td>" + ofertasMostrar[i].detalle + "</td>" +
                 "<td>" + ofertasMostrar[i].precio + "</td>" +
                 "<td>" +
-                "<a onclick=enviarMensaje('" + ofertasMostrar[i]._id + "')>Enviar mensaje</a><br>" +
+                "<a onclick=enviarMensaje('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].autor + "')>Enviar mensaje</a><br>" +
                 "</td>" +
                 "</tr>");
 
         }
     }
+
+    function enviarMensaje(ofertaId, autor) {
+        Cookies.set('ofertaId', ofertaId);
+        Cookies.set('autor', autor);
+        $("#contenedor-principal").load("widget-conversacion.html");
+    }
+
     cargarOfertas();
 </script>

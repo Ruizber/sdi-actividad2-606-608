@@ -283,4 +283,47 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
+
+    app.get("/api/search/conversacion/:ofertaId", function (req, res) {
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.ofertaId)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "Se ha producido un error"
+                })
+            } else {
+                let oferta = ofertas[0];
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
+                                {usuario: res.usuario},
+                                {autor: oferta.autor},
+                                {oferta: gestorBD.mongo.ObjectID(req.params.ofertaId)}
+                            ]
+                        },
+                        {
+                            $and: [
+                                {usuario: oferta.autor},
+                                {autor: res.usuario},
+                                {oferta: gestorBD.mongo.ObjectID(req.params.ofertaId)}
+                            ]
+                        }
+                    ]
+                };
+                gestorBD.obtenerConversacion(criterio, function (conversaciones) {
+                    if (conversaciones == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error al buscar la conversación"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(conversaciones));
+                    }
+                });
+            }
+        });
+    });
 };
