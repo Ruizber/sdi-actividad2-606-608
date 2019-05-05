@@ -13,3 +13,69 @@
 [2019-05-04T20:42:22.753] [INFO] sdi - El usuario pmrtnez@gmail.com se ha logueado correctamente
 [2019-05-04T20:42:25.144] [INFO] sdi - El usuario pmrtnez@gmail.com ha cerrado sesión correctamente
 [2019-05-04T20:42:25.148] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:52:53.935] [INFO] sdi - El usuario accedió al index
+[2019-05-05T19:52:56.051] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:53:10.298] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T19:53:43.016] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T19:53:44.679] [INFO] sdi - Usuario registrado como prueba100@gmail.com
+[2019-05-05T19:53:48.931] [INFO] sdi - Las ofertas se listaron corectamente
+[2019-05-05T19:54:05.503] [INFO] sdi - Nueva oferta añadida
+[2019-05-05T19:54:19.453] [INFO] sdi - Nueva oferta añadida
+[2019-05-05T19:54:22.685] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:54:27.946] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:54:35.963] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:54:51.786] [INFO] sdi - El usuario prueba100@gmail.com ha cerrado sesión correctamente
+[2019-05-05T19:54:51.790] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:55:00.050] [INFO] sdi - El usuario prueba1@prueba1.com se ha logueado correctamente
+[2019-05-05T19:55:02.383] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:55:07.544] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:55:27.181] [INFO] sdi - El usuario prueba1@prueba1.com ha cerrado sesión correctamente
+[2019-05-05T19:55:27.186] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:55:35.789] [INFO] sdi - El usuario admin@email.com se ha logueado correctamente
+[2019-05-05T19:55:35.817] [INFO] sdi - El usuario admin@email.com lista los usuarios de la aplicación
+[2019-05-05T19:55:36.476] [INFO] sdi - Se han listado correctamente los usuarios de la aplicación
+[2019-05-05T19:56:27.363] [INFO] sdi - El usuario accedió al index
+[2019-05-05T19:56:29.301] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:56:36.901] [INFO] sdi - El usuario prueba1@prueba1.com se ha logueado correctamente
+[2019-05-05T19:56:39.785] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:56:42.501] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:56:44.401] [INFO] sdi - El usuario prueba1@prueba1.com ha cerrado sesión correctamente
+[2019-05-05T19:56:44.405] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:56:50.178] [INFO] sdi - El usuario admin@email.com se ha logueado correctamente
+[2019-05-05T19:56:50.184] [INFO] sdi - El usuario admin@email.com lista los usuarios de la aplicación
+[2019-05-05T19:56:50.894] [INFO] sdi - Se han listado correctamente los usuarios de la aplicación
+[2019-05-05T19:56:57.721] [INFO] sdi - Los usuarios se eliminaron correctamente
+[2019-05-05T19:56:57.751] [INFO] sdi - El usuario admin@email.com lista los usuarios de la aplicación
+[2019-05-05T19:56:58.454] [INFO] sdi - Se han listado correctamente los usuarios de la aplicación
+[2019-05-05T19:57:01.310] [INFO] sdi - El usuario admin@email.com ha cerrado sesión correctamente
+[2019-05-05T19:57:01.315] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T19:57:06.721] [INFO] sdi - El usuario prueba1@prueba1.com se ha logueado correctamente
+[2019-05-05T19:57:09.522] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T19:57:12.144] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T20:04:30.051] [INFO] sdi - El usuario accedió al index
+[2019-05-05T20:04:32.324] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T20:04:53.157] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T20:04:53.845] [ERROR] sdi - El email ya está registrado
+[2019-05-05T20:04:53.852] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T20:06:03.432] [INFO] sdi - El usuario accedió al index
+[2019-05-05T20:06:05.462] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T20:06:06.343] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T20:06:22.907] [INFO] sdi - Usuario se va a registrar
+[2019-05-05T20:06:24.460] [INFO] sdi - Usuario registrado como prueba100@gmail.com
+[2019-05-05T20:06:42.035] [INFO] sdi - Nueva oferta añadida
+[2019-05-05T20:06:56.063] [INFO] sdi - Nueva oferta añadida
+[2019-05-05T20:06:58.748] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T20:07:03.019] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T20:07:05.730] [INFO] sdi - El usuario prueba100@gmail.com ha cerrado sesión correctamente
+[2019-05-05T20:07:05.735] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T20:07:12.676] [INFO] sdi - El usuario admin@email.com se ha logueado correctamente
+[2019-05-05T20:07:12.681] [INFO] sdi - El usuario admin@email.com lista los usuarios de la aplicación
+[2019-05-05T20:07:13.435] [INFO] sdi - Se han listado correctamente los usuarios de la aplicación
+[2019-05-05T20:07:19.948] [INFO] sdi - Los usuarios se eliminaron correctamente
+[2019-05-05T20:07:19.953] [INFO] sdi - El usuario admin@email.com lista los usuarios de la aplicación
+[2019-05-05T20:07:20.698] [INFO] sdi - Se han listado correctamente los usuarios de la aplicación
+[2019-05-05T20:07:25.913] [INFO] sdi - El usuario admin@email.com ha cerrado sesión correctamente
+[2019-05-05T20:07:25.929] [INFO] sdi - Usuario se intenta loguear
+[2019-05-05T20:07:32.296] [INFO] sdi - El usuario prueba1@prueba1.com se ha logueado correctamente
+[2019-05-05T20:07:35.346] [INFO] sdi - Se han listado correctamente las páginas
+[2019-05-05T20:07:38.016] [INFO] sdi - Se han listado correctamente las páginas

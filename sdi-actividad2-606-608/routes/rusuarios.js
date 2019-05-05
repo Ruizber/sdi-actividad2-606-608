@@ -137,24 +137,67 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/delete', function (req, res) {
-        let idsUser = req.body.idsUser;
-        if (!Array.isArray(idsUser)) {
-            let aux = idsUser;
-            idsUser = [];
-            idsUser.push(aux);
-        }
-        let criterio = {
-            email: {$in: idsUser}
-        };
-        gestorBD.eliminarUsuarios(criterio, function (usuarios) {
-            if (usuarios === undefined || usuarios.length === 0) {
-                app.get("logger").error('Los usuarios no pudieron eliminarse');
-                res.redirect("/listarUsuarios?mensaje=Los usuarios no pudieron eliminarse");
-            } else {
-                app.get("logger").info('Los usuarios se eliminaron correctamente');
-                res.redirect("/listarUsuarios?mensaje=Los usuarios se eliminaron correctamente");
+        let idsUsers = req.body.idsUser;
+        if (idsUsers === undefined) {
+            res.redirect("/listarUsuarios" +
+                "?mensaje=Los usuarios no pudieron eliminarse" + "&tipoMensaje=alert-danger ");
+        } else {
+            if (!Array.isArray(idsUsers)) {
+                let aux = idsUsers;
+                idsUsers = [];
+                idsUsers.push(aux);
             }
-        });
+            let criterioConversacion = {
+                $or: [{receptor: {$in: idsUsers}},
+                    {emisor: {$in: idsUsers}}]
+            };
+            gestorBD.eliminarMensajes(criterioConversacion, function (conversaciones) {
+                if (conversaciones == null) {
+                    app.get("logger").error("No se pudieron borrar las conversaciones de los usuarios");
+                    res.redirect("/listarUsuarios" +
+                        "?mensaje=No se pudieron borrar las conversaciones de los usuarios");
+                } else {
+                    let criterioMensajes = {
+                        $or: [{receptor: {$in: idsUsers}},
+                            {emisor: {$in: idsUsers}}]
+                    };
+                    gestorBD.eliminarMensajes(criterioMensajes, function (mensajes) {
+                        if (mensajes == null) {
+                            app.get("logger").error("No se pudieron borrar los mensajes de los usuarios");
+                            res.redirect("/listarUsuarios" +
+                                "?mensaje=No se pudieron borrar los mensajes de los usuarios");
+                        } else {
+                            let criterioOferta = {
+                                autor: {$in: idsUsers}
+                            };
+                            gestorBD.eliminarOferta(criterioOferta, function (ofertas) {
+                                if (ofertas == null) {
+                                    app.get("logger").error("No se pudieron borrar las ofertas de los usuarios");
+                                    res.redirect("/listarUsuarios" +
+                                        "?mensaje=No se pudieron borrar las ofertas de los usuarios");
+                                } else {
+                                    let criterio = {
+                                        email: {$in: idsUsers}
+                                    };
+                                    let nuevoCriterio = {valid: false};
+                                    gestorBD.eliminarUsuarios(criterio, nuevoCriterio, function (usuarios) {
+                                        if (usuarios == null || usuarios.length === 0) {
+                                            app.get("logger").error("Los usuarios no pudieron eliminarse");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Los usuarios no pudieron eliminarse");
+                                        } else {
+                                            app.get("logger").info("Los usuarios se eliminaron correctamente");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Los usuarios se eliminaron correctamente");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            });
+        }
     });
 }
 ;

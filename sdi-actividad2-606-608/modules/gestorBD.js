@@ -110,13 +110,15 @@ module.exports = {
             }
         });
     },
-    eliminarUsuarios: function (usuarios, funcionCallback) {
+    eliminarUsuarios: function (usuarios, nuevoCriterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
-                collection.removeMany(usuarios, function (err, result) {
+                collection.remove(usuarios, {
+                    $set: nuevoCriterio
+                }, function (err, result) {
                     if (err) {
                         funcionCallback(null);
                     } else {
